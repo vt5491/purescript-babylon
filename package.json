@@ -1,0 +1,27 @@
+{
+  "name": "purescript-babylon",
+  "version": "0.5.0",
+  "description": "template babylon.js project in purescript.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vt5491/purescript-babylon.git"
+  },
+  "keywords": [
+    "purescript",
+    "babylon",
+    "babylon.js"
+  ],
+  "author": "vt5491",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vt5491/purescript-babylon/issues"
+  },
+  "homepage": "https://github.com/vt5491/purescript-babylon#readme",
+  "dependencies": {
+    "babylonjs": "^4.1.0"
+  }
+}
