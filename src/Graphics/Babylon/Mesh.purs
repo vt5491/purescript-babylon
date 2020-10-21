@@ -1,6 +1,6 @@
 module Graphics.Babylon.Mesh where
 
-import Prelude (Unit)
+import Prelude
 import Effect (Effect)
 import Graphics.Babylon.Scene    as Scene
 import Graphics.Babylon.Utils (fpi, ffi)

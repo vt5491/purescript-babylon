@@ -13,7 +13,10 @@ import Graphics.Babylon.Material as Material
 import Graphics.Babylon.Light as Light
 import Math (pi)
 import Graphics.Babylon.Utils (ffi, oneDeg)
+import UtilsInternal (addResizeListener)
 import Base as Base
+-- subscenes
+import Scenes.HelloWorldScene as HelloWorldScene
 
 -- data Context = Context {
 --           -- renderer  :: Renderer.Renderer
@@ -22,19 +25,36 @@ import Base as Base
 --         -- , camera    :: Camera.CameraInstance
 --         --TODO objects
 --     }
-debugger :: Engine.Engine -> Effect Unit
-debugger = ffi ["x"] "function (x) {debugger}"
+-- debugger :: Engine.Engine -> Effect Unit
+-- debugger = ffi ["x"] "function (x) {debugger}"
+--
+-- debuggerInt :: Int -> Engine.Engine -> Effect Unit
+-- debuggerInt = ffi ["x", "e"] "function (x) {debugger}"
 
-debuggerInt :: Int -> Engine.Engine -> Effect Unit
-debuggerInt = ffi ["x", "e"] "function (x) {debugger}"
+debuggerMat :: Material.StandardMaterial -> Effect Unit
+debuggerMat = ffi ["x"]
+  """function () {
+       console.log("x=", x);
+       //debugger;
+     }
+  """
 
-renderFn =  ffi [""]
+-- renderFn =  ffi [""]
+--       """(function () {
+--             //console.log("now in renderFn");
+--             //return BABYLON.VT_active_scene.render();
+--             BABYLON.VT_active_scene.render();
+--           })()
+--       """
+
+renderFn =  ffi ["scene"]
       """(function () {
             //console.log("now in renderFn");
-            return BABYLON.VT_active_scene.render();
-          })()
+            //return BABYLON.VT_active_scene.render();
+            //BABYLON.VT_active_scene.render();
+            scene.render();
+          })
       """
-
 runMainScene :: Effect Unit
 runMainScene =
   let x = 3
@@ -44,6 +64,7 @@ runMainScene =
   in do
     log "hello from MainScene toplevel"
     engine       <- Engine.createEngine canvas
+    addResizeListener engine
     -- let r = Engine.getDescription engine
     -- log $ "r=" <> r
     -- let r = show dummyObj
@@ -57,9 +78,29 @@ runMainScene =
     light <- Light.createHemisphericLight "light" (Vector.createVector3 0.0 1.0 0.0) scene
     ground <- Mesh.createGround "ground" {width: 50, height: 50} scene
     greenMat <- Material.createStandardMaterial "greenMat" scene
-    Material.setDiffuseColor greenMat Material.green
+    -- debuggerMat greenMat
+    let greenColor = Material.green 1
+    log $ "greenColor=" <> (show greenColor)
+    -- Material.setDiffuseColor greenMat $ Material.green 1
+    Material.setDiffuseColor greenMat greenColor
+    purpleMat <- Material.createStandardMaterial "purpleMat" scene
+    Material.setDiffuseColor purpleMat $ Material.purple 1
+
     Mesh.setMaterial ground greenMat
     box <- Mesh.createBox "box" {} scene
     Mesh.setPosition box $ Vector.createVector3 0.0 0.5 0.0
-    Engine.runRenderLoop engine renderFn
+    Mesh.setMaterial box purpleMat
+    -- Engine.runRenderLoop engine renderFn
+    Engine.runRenderLoop engine $ renderFn scene
+    -- log "hi" <<< log "bye"
+    -- do
+    --   log "hi"
+    --   log "bye"
+    case Base.topLevelScene of
+        "HelloWorld" -> do
+                          log "calling HelloWorldScene"
+                          HelloWorldScene.main scene
+
+        "LoadModel" -> log "calling LoadModelScene"
+        _           -> log "Unknown Scene specified"
     pure unit

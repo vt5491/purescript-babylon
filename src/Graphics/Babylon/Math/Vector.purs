@@ -1,6 +1,6 @@
 module Graphics.Babylon.Math.Vector where
 
-import Prelude (class Show)
+import Prelude
 import Graphics.Babylon.Utils (ffi)
 
 foreign import data Vector2 :: Type

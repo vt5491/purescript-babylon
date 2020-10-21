@@ -1,6 +1,6 @@
 module Graphics.Babylon.Scene where
 
-import Prelude (Unit)
+import Prelude
 import Effect (Effect)
 import Data.Maybe (Maybe)
 import Graphics.Babylon.Utils (fpi, ffi)
@@ -20,6 +20,9 @@ create = ffi ["engine"]
   """
 getCanvasById :: String -> Canvas
 getCanvasById = ffi ["id"] "document.getElementById(id)"
+
+uid :: Scene -> String
+uid = ffi ["scene"] "(() => {return scene.uid})()"
 
 -- following is a hack
 setActiveScene :: Scene -> Effect Unit

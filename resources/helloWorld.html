@@ -4,10 +4,22 @@
     <meta charset="UTF-8">
     <title>Hello World - BABYLON.js</title>
     <style>
+      /* body {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      } */
         body {
             margin: 0;
             overflow: hidden;
             text-align: center;
+        }
+        #renderCanvas {
+          width: 100%;
+          height: 100%;
+          touch-action: none;
         }
     </style>
 </head>
@@ -23,8 +35,10 @@
     button.addEventListener ("click", function() {
       BABYLON.VT_active_scene.debugLayer.show();
     });
+
   </script>
-    <canvas id="renderCanvas" width="1024" height="768"></canvas>
+    <!-- <canvas id="renderCanvas" width="1024" height="768"></canvas> -->
+    <canvas id="renderCanvas"></canvas>
     <script src="libs/babylon/babylon.max.js"></script>
     <script src="../index.js"></script>
     <script src="js/vt_dummy.js"></script>

@@ -2,7 +2,7 @@ module Graphics.Babylon.Engine where
 
 import Prelude
 import Effect (Effect)
-import Graphics.Babylon.Utils (ffi, debuggerStrArray)
+import Graphics.Babylon.Utils (ffi)
 import Base (FFICallback, Canvas)
 
 foreign import data Engine :: Type

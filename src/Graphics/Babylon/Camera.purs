@@ -1,6 +1,6 @@
 module Graphics.Babylon.Camera where
 
-import Prelude (Unit)
+import Prelude
 import Effect (Effect)
 import Graphics.Babylon.Utils (fpi, ffi, oneDeg)
 import Graphics.Babylon.Math.Vector (Vector3)
