@@ -28,3 +28,12 @@ setMaterial = ffi ["mesh", "mat"]
 
 setPosition :: Mesh -> Vector3 -> Effect Unit
 setPosition = ffi ["mesh", "v3"] "(function () {return mesh.position = v3})"
+
+getName :: Mesh -> String
+getName = ffi ["m"]
+  """(() => {
+              console.log("Mesh.getName: mesh=", m);
+              console.log("Mesh.getName: mesh.name=", m.name);
+              return m.name;
+  })()
+  """

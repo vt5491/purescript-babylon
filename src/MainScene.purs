@@ -55,7 +55,8 @@ renderFn =  ffi ["scene"]
             scene.render();
           })
       """
-runMainScene :: Effect Unit
+-- runMainScene :: Effect Unit
+runMainScene :: Effect Scene.Scene
 runMainScene =
   let x = 3
       y = 4
@@ -103,4 +104,5 @@ runMainScene =
 
         "LoadModel" -> log "calling LoadModelScene"
         _           -> log "Unknown Scene specified"
-    pure unit
+    -- pure unit
+    pure scene

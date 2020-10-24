@@ -9,6 +9,9 @@ import Base (FFICallback, Canvas)
 
 foreign import data Scene :: Type
 
+instance showScene :: Show Scene where
+  show = ffi ["s"] "(function () {return 'hey ' + s.uid})()" 
+
 create :: Engine -> Effect Scene
 create = ffi ["engine"]
   """(function () {
@@ -28,3 +31,33 @@ uid = ffi ["scene"] "(() => {return scene.uid})()"
 setActiveScene :: Scene -> Effect Unit
 setActiveScene = ffi["scene"]
   "(function () {BABYLON.VT_active_scene=scene})"
+-- end hack
+getScene :: Int -> Scene
+getScene = ffi [""]
+  """(function () {
+        //var s = BABYLON.Engine.Instances[0].scenes[0];
+        //debugger;
+        console.log("getScene: Instances.length=", BABYLON.Engine.Instances.length);
+        console.log("getScene: Instances[1]=", BABYLON.Engine.Instances[1]);
+        var instance_1 = BABYLON.Engine.Instances[1];
+        var s;
+        var s2;
+        if (instance_1) {
+          console.log("getScene: instance_1=", instance_1);
+          console.log("getScene: instance_1.scenes=", instance_1.scenes);
+          s2 = instance_1.scenes[0];
+          console.log("getScene: s2.uid=", s2.uid, ",s2=", s2);
+        }
+        if (s2) {
+          return s2;
+        }
+        else {
+          BABYLON.Engine.Instances[0].scenes[0];
+          return s;
+        }
+        //var s = BABYLON.Engine.Instances[0].scenes[0];
+        //return s;
+        return s2;
+        //return BABYLON.Engine.Instances[0].scenes[1];
+  })()
+  """

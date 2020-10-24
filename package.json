@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/vt5491/purescript-babylon#readme",
   "dependencies": {
-    "babylonjs": "^4.1.0"
+    "babylonjs": "^4.1.0",
+    "babylonjs-loaders": "^4.1.0"
   }
 }

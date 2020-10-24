@@ -50,5 +50,5 @@ printObj = ffi ["o"] "console.log('obj=', obj)"
 
 -- Define the top level scene, to be called after MainScene
 topLevelScene :: String
-topLevelScene = "HelloWorld"
--- topLevelScene = "LoadModel"
+-- topLevelScene = "HelloWorldScene"
+topLevelScene = "LoadModelScene"

@@ -11,6 +11,8 @@ You can edit this file as you like.
   , "math"
   , "maybe"
   , "psci-support"
+  , "record"
+  , "transformers"
   ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
