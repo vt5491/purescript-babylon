@@ -23,7 +23,7 @@ to resources/libs/babylon.
 
   -> This creates a web bundle 'index.js' in the root dir.
 2. Open the associated html file for your scene in a browser e.g.:
-resources/helloWorld.html
+resources/index.html
 
 
 ### Developer Notes:

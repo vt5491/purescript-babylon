@@ -48,6 +48,14 @@ type FFICallback = String
 printObj :: Object -> Effect Unit
 printObj = ffi ["o"] "console.log('obj=', obj)"
 
+printArray :: forall a. Array a -> Effect Unit
+printArray = ffi ["array"]
+  """( () => {
+      console.log('array=', array);
+      array[0]._scaling = new BABYLON.Vector3(0.1, 0.1, 0.1);
+  })()
+  """
+
 -- Define the top level scene, to be called after MainScene
 topLevelScene :: String
 -- topLevelScene = "HelloWorldScene"
