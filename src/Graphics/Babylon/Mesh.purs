@@ -6,11 +6,21 @@ import Graphics.Babylon.Scene    as Scene
 import Graphics.Babylon.Utils (fpi, ffi)
 import Graphics.Babylon.Material as Material
 import Graphics.Babylon.Math.Vector (Vector3)
+import Graphics.Babylon.Math.Quaternion (Quaternion)
+-- import Data.Maybe (Maybe, Just)
+import Data.Maybe (Maybe(Just, Nothing))
 
 foreign import data Mesh :: Type
 
 instance showMesh :: Show Mesh where
-  show = ffi ["m"] "(function () {return 'uid=' + m.uid + ',scaling=' + m.scaling})()"
+  show = ffi ["m"]
+    """(() => {
+      var result = "";
+      result += "uid=" + m.uid  +"\n";
+      result += "scaling=" + m.scaling + "\n";
+      result += "rotationQuaternion=" + m.rotationQuaternion + "\n";
+      return result})()
+    """
 
 createGround :: String -> forall opt. {|opt} -> Scene.Scene -> Effect Mesh
 createGround = ffi ["name", "opt", "scene"]
@@ -32,6 +42,15 @@ setMaterial = ffi ["mesh", "mat"]
 setPosition :: Mesh -> Vector3 -> Effect Unit
 setPosition = ffi ["mesh", "v3"] "(function () {return mesh.position = v3})"
 
+setRotationQuaternion :: Mesh -> Quaternion -> Effect Unit
+setRotationQuaternion = ffi ["mesh", "q"]
+  """(function () {
+    console.log("setRotationQuaternion.pre=", mesh.rotationQuaternion);
+    mesh.rotationQuaternion = q;
+    console.log("setRotationQuaternion.post=", mesh.rotationQuaternion);
+  })()
+  """
+
 setScale :: Mesh -> Number -> Number -> Number -> Effect Unit
 setScale = ffi ["mesh", "x", "y", "z"]
   """(function () {
@@ -42,12 +61,12 @@ setScale = ffi ["mesh", "x", "y", "z"]
        console.log("Mesh.setScale: mesh.scaling post=", mesh._scaling);
   })()"""
 
-setScale2 :: Mesh -> Effect Unit
-setScale2 = ffi ["mesh"]
-  """(() => {
-       console.log("Mesh.setScale2: mesh.scaling pre=", mesh._scaling);
-  })()
-  """
+-- setScale2 :: Mesh -> Effect Unit
+-- setScale2 = ffi ["mesh"]
+--   """(() => {
+--        console.log("Mesh.setScale2: mesh.scaling pre=", mesh._scaling);
+--   })()
+--   """
 
 getName :: Mesh -> String
 getName = ffi ["m"]
@@ -66,3 +85,7 @@ getName2 = ffi ["m"]
               return m.name;
   })()
   """
+
+getName3 :: Maybe Mesh -> String
+getName3 (Just m) = getName m
+getName3 Nothing = ""

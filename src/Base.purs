@@ -4,6 +4,7 @@ import Prelude
 
 import Effect (Effect)
 import Graphics.Babylon.Utils (ffi, fpi)
+import Math (pi)
 -- some common BJS types that don't have their own modules yet.
 foreign import data Color3 :: Type
 foreign import data Object :: Type
@@ -27,6 +28,9 @@ tmp_f_3 = ffi ["n", "c"]
          return 'hey, color=' + c;
      })()
   """
+
+oneDeg :: Number
+oneDeg = pi / 180.0
 
 instance showColor3 :: Show Color3 where
   -- show c = "Color3 = " <> c
@@ -57,6 +61,8 @@ printArray = ffi ["array"]
   """
 
 -- Define the top level scene, to be called after MainScene
+-- HelloWorldScene: a basic cube on a plane scene
+-- LoadModelScene: load in a gltf model.  Good illustration of using callbacks.
 topLevelScene :: String
 -- topLevelScene = "HelloWorldScene"
 topLevelScene = "LoadModelScene"
