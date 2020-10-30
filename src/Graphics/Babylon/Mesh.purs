@@ -9,6 +9,8 @@ import Graphics.Babylon.Math.Vector (Vector3)
 import Graphics.Babylon.Math.Quaternion (Quaternion)
 -- import Data.Maybe (Maybe, Just)
 import Data.Maybe (Maybe(Just, Nothing))
+-- import Types (Scene)
+-- import Graphics.Babylon.Common as Common
 
 foreign import data Mesh :: Type
 
@@ -21,6 +23,12 @@ instance showMesh :: Show Mesh where
       result += "rotationQuaternion=" + m.rotationQuaternion + "\n";
       return result})()
     """
+
+printMesh :: Mesh -> Effect Unit
+printMesh = fpi ["m"]
+  """
+    console.log('printMesh: mesh=', m)
+  """
 
 createGround :: String -> forall opt. {|opt} -> Scene.Scene -> Effect Mesh
 createGround = ffi ["name", "opt", "scene"]
@@ -89,3 +97,10 @@ getName2 = ffi ["m"]
 getName3 :: Maybe Mesh -> String
 getName3 (Just m) = getName m
 getName3 Nothing = ""
+
+getMeshByName :: Scene.Scene -> String -> Mesh
+getMeshByName = fpi ["scene", "name"]
+  """
+    //console.log("getMeshByName: name=", name, ", scene=", scene);
+    return scene.getMeshByName(name);
+  """

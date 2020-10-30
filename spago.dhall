@@ -4,10 +4,12 @@ You can edit this file as you like.
 -}
 { name = "my-project"
 , dependencies =
-  [ "arrays"
+  [ "aff"
+  , "arrays"
   , "console"
   , "easy-ffi"
   , "effect"
+  , "foreign-object"
   , "math"
   , "maybe"
   , "psci-support"

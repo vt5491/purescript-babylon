@@ -13,3 +13,10 @@ console.log("hello from dummy_module.mjs");
 // console.log('js: Game.dummy=', PS.Game.dummy);
 
 export const name = 'square';
+
+// exports.dummy_module_mjs_7 = function () {
+//   return 7;
+// }
+export function dummy_module_mjs_7 () {
+  return 7;
+}

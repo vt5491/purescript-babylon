@@ -10,10 +10,13 @@ import MainScene (runMainScene)
 import Graphics.Babylon.Scene (uid)
 import Base as Base
 import Graphics.Babylon.Mesh as Mesh
+-- import Graphics.Babylon.Common (WebXRExperienceHelper )
+import Graphics.Babylon.Common as Common
 -- subscenes
 import Scenes.HelloWorldScene as HelloWorldScene
 import Scenes.LoadModelScene as LoadModelScene
 import Scenes.LoadModelScene (meshLoadedPS)
+import Scenes.BasicXRScene as BasicXRScene
 
 dummy :: Int
 dummy = 7
@@ -24,6 +27,11 @@ dummy = 7
 forceExportMeshLoadedPS :: Array Mesh.Mesh -> Effect Unit
 forceExportMeshLoadedPS meshes = LoadModelScene.meshLoadedPS meshes
 
+forceExportInitXR :: Common.WebXRExperienceHelper -> Effect Unit
+-- forceExportInitXR :: Common.WebXRDefaultExperience -> Effect Unit
+forceExportInitXR xrHelper = Common.initXR xrHelper
+
+-- initXR :: WebXRExperienceHelper -> String
 main :: Effect Unit
 main = do
   let forceExport = meshLoadedPS
@@ -49,6 +57,14 @@ main = do
                         LoadModelScene.main scene
                         pure unit
       -- "LoadModelScene" -> log "calling LoadModelScene"
+      "BasicXRScene" -> do
+                        log "calling BasicXRScene"
+                        scene <- runMainScene
+                        let my_uid = uid scene
+                        log $ "Game: scene.uid=" <> my_uid
+                        log $ "show scene=" <> show scene
+                        let r = BasicXRScene.main scene
+                        pure unit
       _           -> log "Unknown Scene specified"
   -- mainLoadModel
   -- mainHelloWorld

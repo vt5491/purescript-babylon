@@ -15,8 +15,14 @@ import Math (pi)
 import Graphics.Babylon.Utils (ffi, oneDeg)
 import UtilsInternal (addResizeListener)
 import Base as Base
+-- import Data.Foreign
 -- subscenes
 import Scenes.HelloWorldScene as HelloWorldScene
+
+-- foreign import dummy_js_7 :: Number
+foreign import foo :: Number -> Number -> Number -> Number
+foreign import green4 :: Int -> Base.Color3
+foreign import green5 :: Effect Base.Color3
 
 -- data Context = Context {
 --           -- renderer  :: Renderer.Renderer
@@ -62,8 +68,11 @@ runMainScene =
       y = 4
       dummyObj = {a: 7, b: 8}
       canvas = Scene.getCanvasById "renderCanvas"
+      -- dummy = dummy_module_mjs_7
+      foo_r = foo 1.0 2.0 3.0
   in do
     log "hello from MainScene toplevel"
+    log $ "foo_r=" <> show foo_r
     engine       <- Engine.createEngine canvas
     addResizeListener engine
     -- let r = Engine.getDescription engine
@@ -80,7 +89,12 @@ runMainScene =
     ground <- Mesh.createGround "ground" {width: 50, height: 50} scene
     greenMat <- Material.createStandardMaterial "greenMat" scene
     -- debuggerMat greenMat
-    let greenColor = Material.green 1
+    -- let greenColor = Material.green 1
+    -- let greenColor = Material.green2
+    -- let greenColor = Material.green3
+    greenColor <- Material.green3
+    -- let greenColor = green4 1
+    -- greenColor <- green5
     log $ "greenColor=" <> (show greenColor)
     -- Material.setDiffuseColor greenMat $ Material.green 1
     Material.setDiffuseColor greenMat greenColor
@@ -97,12 +111,12 @@ runMainScene =
     -- do
     --   log "hi"
     --   log "bye"
-    case Base.topLevelScene of
-        "HelloWorld" -> do
-                          log "calling HelloWorldScene"
-                          HelloWorldScene.main scene
-
-        "LoadModel" -> log "calling LoadModelScene"
-        _           -> log "Unknown Scene specified"
+    -- case Base.topLevelScene of
+    --     "HelloWorld" -> do
+    --                       log "calling HelloWorldScene"
+    --                       HelloWorldScene.main scene
+    --
+    --     "LoadModel" -> log "calling LoadModelScene"
+    --     _           -> log "Unknown Scene specified"
     -- pure unit
     pure scene

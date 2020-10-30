@@ -65,4 +65,7 @@ printArray = ffi ["array"]
 -- LoadModelScene: load in a gltf model.  Good illustration of using callbacks.
 topLevelScene :: String
 -- topLevelScene = "HelloWorldScene"
-topLevelScene = "LoadModelScene"
+-- Note: topLevelScene require you run "python cors_server.py" from the resources dir
+-- in order to properly serve the encore.gltf file without CORS errors.
+-- topLevelScene = "LoadModelScene"
+topLevelScene = "BasicXRScene"
