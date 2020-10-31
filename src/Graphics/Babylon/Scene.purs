@@ -18,7 +18,8 @@ import Base (FFICallback, Canvas)
 foreign import data Scene :: Type
 
 instance showScene :: Show Scene where
-  show = ffi ["s"] "(function () {return 'hey ' + s.uid})()"
+  -- show = ffi ["s"] "(function () {return  s.uid})()"
+  show = ffi ["s"] "s.uid"
 
 create :: Engine -> Effect Scene
 create = ffi ["engine"]

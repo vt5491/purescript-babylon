@@ -1,3 +1,5 @@
+-- Base is refer to few, referred by many.
+-- Base is also app level, not framework level.
 module Base where
 
 import Prelude

@@ -15,6 +15,7 @@ import Base as Base
 import Graphics.Babylon.Utils (ffi)
 import Data.Array (length, filter, head)
 import Tmp as Tmp
+import UtilsInternal as UtilsInternal
 -- import Data.Maybe (Maybe, Just)
 -- import Data.Maybe
 
@@ -107,9 +108,12 @@ dummy2 n = n + 1
 dummyB :: Int
 dummyB = 18
 
-main :: Scene.Scene -> Effect Unit
-main scene = do
+-- main :: Scene.Scene -> Effect Unit
+main :: UtilsInternal.Context -> Effect Unit
+-- main scene = do
+main ctx = do
   let d = dummy
+  let scene = UtilsInternal.getContextScene ctx
   -- log $ "LoadModelScene.main: abf" <> "\n" <> "def" <> show d
   -- let d2 = show meshLoadedPS
   box2 <- Mesh.createBox "box2" {} scene
