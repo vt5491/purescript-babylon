@@ -5,6 +5,7 @@ You can edit this file as you like.
 { name = "my-project"
 , dependencies =
   [ "aff"
+  , "affjax"
   , "arrays"
   , "console"
   , "easy-ffi"
@@ -12,6 +13,9 @@ You can edit this file as you like.
   , "foreign-object"
   , "math"
   , "maybe"
+  , "node-fs"
+  , "node-fs-aff"
+  , "node-path"
   , "psci-support"
   , "record"
   , "transformers"

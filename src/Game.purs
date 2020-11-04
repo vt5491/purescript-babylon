@@ -4,6 +4,9 @@ import Prelude
 
 import Effect (Effect)
 import Effect.Console (log)
+import Control.Monad.State
+import Control.Monad.State.Class
+import Data.Foldable (traverse_)
 -- import Examples.LoadModel (mainLoadModel)
 -- import Examples.HelloWorld (mainHelloWorld)
 import MainScene (runMainScene)
@@ -22,6 +25,21 @@ import UtilsInternal as UtilsInternal
 dummy :: Int
 dummy = 7
 
+-- incCounter :: Array Int -> State Int Unit
+-- -- incCounter :: Int -> State Int Int
+-- incCounter =  traverse_ \n -> modify \sum -> n + sum
+
+sumArray :: Array Int -> State Int Unit
+sumArray = traverse_ \n -> modify \sum -> sum + n
+
+sumArrayExec = execState (do
+              sumArray [1,2,3]) 0
+
+-- sumIncCounter = execState (do
+--               incCounter [2]
+--               incCounter [1]) 0
+-- counter :: State Int
+-- counter = 0
 -- hack to force exporting of ps functions to be called by js callbacks.
 -- Has to be done at the "root" module level i.e. can't be done at the callback
 -- module itself.
@@ -32,8 +50,12 @@ forceExportMeshLoadedPS meshes = LoadModelScene.meshLoadedPS meshes
 -- forceExportInitXR xrHelper = Common.initXR xrHelper
 -- forceExportInitXR :: Common.WebXRExperienceHelper -> UtilsInternal.Context -> Effect Unit
 -- forceExportInitXR xrHelper ctx = Common.initXR xrHelper ctx
-forceExportInitXR :: Common.WebXRExperienceHelper -> UtilsInternal.ContextObj -> Effect Unit
+-- forceExportInitXR :: Common.WebXRExperienceHelper -> UtilsInternal.ContextObj -> Effect Unit
+forceExportInitXR :: Common.WebXRExperienceHelper -> UtilsInternal.ContextObj -> Effect UtilsInternal.ContextObj
 forceExportInitXR xrHelper ctxObj = Common.initXR xrHelper ctxObj
+
+forceExportInitXR3 :: Common.WebXRExperienceHelper -> UtilsInternal.ContextObj -> UtilsInternal.ContextObj
+forceExportInitXR3 xrHelper ctxObj = Common.initXR3 xrHelper ctxObj
 
 -- initXR :: WebXRExperienceHelper -> String
 main :: Effect Unit
@@ -86,6 +108,12 @@ main = do
                           -- let r = BasicXRScene.main ctx
                           -- r
                           BasicXRScene.main ctx
-                          -- pure unit
+                          -- let r = execState (do
+                          --   sumArray [1,2,3]) 0
+                          let r = sumArrayExec
+                          log $ "sumArrayExec=" <> show r
+                          let r2 = Common.sumIncCounter
+                          log $ "sumIncCounter=" <> show r2
+                          pure unit
       _           -> log "Unknown Scene specified"
   pure unit

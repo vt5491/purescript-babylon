@@ -83,7 +83,8 @@ getScene = ffi [""]
       -- (-> (.createDefaultXRExperienceAsync scene (js-obj "floorMeshes" (array (.-ground env))))
 -- dummy :: Array Mesh -> Int
 -- dummy ms = 7
--- createDefaultXRExperienceAsync :: Types.Scene -> {floorMeshes :: Array Types.Mesh} -> Aff Unit
+-- Note: can't call from here due to cyclical dependencies when importing Mesh.  Use Common instead.
+-- createDefaultXRExperienceAsync :: Scene -> {floorMeshes :: Array Types.Mesh} -> Aff Unit
 -- createDefaultXRExperienceAsync = fpi ["scene", "opts"]
 --   """
 --     console.log("scene=", scene, ",opts=", opts);

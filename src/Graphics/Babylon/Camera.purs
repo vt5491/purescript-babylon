@@ -14,7 +14,7 @@ data CameraInstance = ArcRotateCamera | WebXRCamera
 
 instance showCameraInstance :: Show CameraInstance where
   -- show = ffi ["c"] "(function () {return c.name})()"
-  show = ffi ["c"] "c.name"
+  show = ffi ["c"] "'camera.name=' + c.name + ', camera.uniqueId=' + c.uniqueId"
 
 type Name = String
 type Alpha = Number

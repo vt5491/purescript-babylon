@@ -189,3 +189,34 @@ foTest = do
     inserted = FO.insert "a" 1 o
     -- log $ "o=" <> show o
   pure unit
+
+--- play around with Maybe
+mbAdd1 :: Int -> Maybe Int
+mbAdd1 n = Just $ n + 1
+
+mbAdd2 :: Int -> Maybe Int
+mbAdd2 n = Just $ n + 2
+
+mbAddChaos :: Int -> Maybe Int
+mbAddChaos n
+    | n < 100 = Just n
+    | otherwise = Nothing
+
+mbDo :: Int -> Maybe Int
+mbDo n =
+  let a = "hi"
+  in do
+    r1 <- mbAdd1 n
+    rc <- mbAddChaos r1
+    r2 <- mbAdd2 rc
+    pure r2
+
+-- play around with changing objects
+type Person = {name :: String, id :: Int}
+
+fred :: Person
+fred = {name: "fred", id: 69}
+
+-- var newCtxObj = Graphics_Babylon_Common.createXRExp2(UtilsInternal.contextToObj(ctx))({
+--               floorMeshes: [ ground ]
+--           })("myCB")();
