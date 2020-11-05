@@ -46,6 +46,12 @@ getContextScene (Context {scene: s, camera: c}) = s
 getContextCamera :: Context -> CameraInstance
 getContextCamera (Context {scene: s, camera: c}) = c
 
+-- getCurrentCamera :: Context -> CameraInstance
+-- getCurrentCamera
+-- voidCameraInstance :: CameraInstance
+-- getCurrentCamera :: CameraInstance
+-- getCurrentCamera = createContext
+
 -- contextToObj :: Context -> {scene :: Scene, camera :: CameraInstance}
 -- contextToObj (Context {scene: s, camera: c}) = {scene: s, camera: c}
 

@@ -24,6 +24,13 @@ import Scenes.HelloWorldScene as HelloWorldScene
 foreign import foo :: Number -> Number -> Number -> Number
 foreign import green4 :: Int -> Base.Color3
 foreign import green5 :: Effect Base.Color3
+-- foreign import incClick :: Effect Unit
+
+dummyMainScene ::  Int -> Int
+dummyMainScene n = 8
+
+currentCtx :: Scene.Scene -> Camera.CameraInstance -> UtilsInternal.Context
+currentCtx s c = UtilsInternal.createContext s c
 
 debuggerMat :: Material.StandardMaterial -> Effect Unit
 debuggerMat = ffi ["x"]

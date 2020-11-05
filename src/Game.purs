@@ -9,7 +9,8 @@ import Control.Monad.State.Class
 import Data.Foldable (traverse_)
 -- import Examples.LoadModel (mainLoadModel)
 -- import Examples.HelloWorld (mainHelloWorld)
-import MainScene (runMainScene)
+-- import MainScene (runMainScene, dummyMainScene)
+import MainScene (runMainScene, dummyMainScene) as MainScene
 import Graphics.Babylon.Scene (uid)
 import Base as Base
 import Graphics.Babylon.Mesh as Mesh
@@ -57,6 +58,14 @@ forceExportInitXR xrHelper ctxObj = Common.initXR xrHelper ctxObj
 forceExportInitXR3 :: Common.WebXRExperienceHelper -> UtilsInternal.ContextObj -> UtilsInternal.ContextObj
 forceExportInitXR3 xrHelper ctxObj = Common.initXR3 xrHelper ctxObj
 
+forceExportDummyMainScene :: Int -> Int
+forceExportDummyMainScene n = MainScene.dummyMainScene n
+
+forceExportEnterXR :: Int -> Effect Unit
+forceExportEnterXR n = Common.enterXR n
+-- forceExportIncClick :: Effect Unit
+-- forceExportIncClick = MainScene.incClick
+
 -- initXR :: WebXRExperienceHelper -> String
 main :: Effect Unit
 main = do
@@ -67,7 +76,7 @@ main = do
       "HelloWorldScene" -> do
                             log "calling HelloWorldScene"
                             -- scene <- runMainScene
-                            ctx <- runMainScene
+                            ctx <- MainScene.runMainScene
                             -- let my_uid = uid scene
                             -- let scene = ctx.scene
                             let scene = UtilsInternal.getContextScene ctx
@@ -82,7 +91,7 @@ main = do
       "LoadModelScene" -> do
                           log "calling LogModelScene"
                           -- scene <- runMainScene
-                          ctx <- runMainScene
+                          ctx <- MainScene.runMainScene
                           let scene = UtilsInternal.getContextScene ctx
                           let my_uid = uid scene
                           log $ "Game: scene.uid=" <> my_uid
@@ -93,9 +102,11 @@ main = do
       "BasicXRScene" -> do
                           log "calling BasicXRScene"
                           -- scene <- runMainScene
-                          ctx <- runMainScene
+                          -- ctx <- MainScene.runMainScene
+                          ctx@(UtilsInternal.Context c) <- MainScene.runMainScene
                           let r = show ctx
                           log $ "Game: r=" <> r
+                          log $ "Game: c.camera=" <> show c.camera
                           -- let scene = ctx.scene
                           -- let scene = (UtilsInternal.Context ctx.scene)
                           let scene = UtilsInternal.getContextScene ctx

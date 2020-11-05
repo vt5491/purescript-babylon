@@ -1,4 +1,4 @@
-// const Game = require('../output/Game/index');
+// const Game = require('../../output/Game/index.js');
 // console.log('js: Game.dummy=', Game.dummy());
 //  Note: cannot do imports in a plain .js file.  Can only do from a module.
 // import {name} from '../modules/dummy_module.mjs';

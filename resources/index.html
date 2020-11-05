@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello World - BABYLON.js</title>
+    <link rel="stylesheet" href="style.css">
     <style>
       /* body {
         overflow: hidden;
@@ -24,11 +25,13 @@
     </style>
 </head>
 <body>
+  <button type="button" id="dev_btn">inc</button>
     <!-- <div id="container"></div> -->
     <script>
     //import * from 'dummy_module.mjs';
     var button = document.createElement("debug_btn");
     button.innerHTML = "debug2";
+    button.classList.add('btn');
 
     var body = document.getElementsByTagName("body")[0];
     body.appendChild(button);
@@ -37,6 +40,18 @@
       BABYLON.VT_active_scene.debugLayer.show();
     });
 
+    var dev_btn = document.getElementById("dev_btn");
+    dev_btn.addEventListener("click", () => {
+      let newFn = () => {
+        let curVal =  PS.MainScene.dummyMainScene(1);
+        let newVal = curVal + 1;
+        PS.MainScene.dummyMainScene = function (n) {return newVal;}
+        console.log("MainScene.js curVal=", curVal , ", dummyMainScene=", PS.MainScene.dummyMainScene(1));
+      }
+      // console.log("dev_btn clicked, dummyMainScene=", PS.MainScene.dummyMainScene(1));
+      // console.log("dev_btn clicked, ", newFn(1));
+      newFn();
+    })
   </script>
     <!-- <canvas id="renderCanvas" width="1024" height="768"></canvas> -->
     <canvas id="renderCanvas"></canvas>
@@ -47,7 +62,7 @@
     <!-- <script type="module" src="./modules/dummy_module.mjs"></script> -->
     <!--  run python cors_server.py from resources dir to serve the following modules -->
     <script type="module" src="http://localhost:8000/modules/dummy_module.mjs"></script>
-    <script type="module" src="http://localhost:8000/modules/dummy_module_2.mjs"></script>
+    <!-- <script type="module" src="http://localhost:8000/modules/dummy_module_2.mjs"></script> -->
     <!-- <script src="modules/dummy_module.js"></script> -->
     <!-- <script src="modules/dummy_module.js"></script> -->
     <!-- <script src="modules/dummy_module.mjs"></script> -->

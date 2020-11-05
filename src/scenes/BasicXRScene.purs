@@ -157,12 +157,12 @@ main ctx =
     -- newCtxObj <- Common.createXRExp (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     -- let newCtxObj3 = Common.createXRExp3 (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     -- let newCtxObj4 = Common.createXRExp4 (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
-    --vt-x let newCtxObj5 = Common.createXRExp5 (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
+    let newCtxObj5 = Common.createXRExp5 (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     -- let newCtx3 = UtilsInternal.contextObjToContext $ newCtxObj3
     -- log $ "BasicXRScene: newCtxObj3=" <> show newCtxObj3
     -- log $ "BasicXRScene: newCtx3.scene=" <> show (UtilsInternal.getContextScene newCtx3)
     -- UtilsInternal.printCtx newCtx3
-    --vt-x UtilsInternal.printCtxObj  "loca"  newCtxObj5
+    UtilsInternal.printCtxObj  "loca"  newCtxObj5
     -- log $ "BasicXRScene: newCtxObj3=" <> newCtxObj3
     -- log $ "BasicXRScene:r2=" <> r2
     -- log $ "BasicXRScene:r1=" <> r1

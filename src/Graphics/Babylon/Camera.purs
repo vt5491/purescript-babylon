@@ -34,3 +34,10 @@ attachControl = ffi ["camera", "canvas", "bool"]
          camera.attachControl(canvas, bool);
   })
   """
+
+-- following is a hack
+setActiveCamera :: CameraInstance -> Effect Unit
+setActiveCamera = ffi["camera"]
+  """ BABYLON.VT.active_camera = camera;
+  """
+-- end hack

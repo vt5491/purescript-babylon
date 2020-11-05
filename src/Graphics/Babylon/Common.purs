@@ -9,6 +9,7 @@ import Control.Monad.State.Class
 import Data.Foldable (traverse_)
 import Graphics.Babylon.Utils (ffi, fpi)
 import Graphics.Babylon.Scene as Scene
+import Graphics.Babylon.Camera as Camera
 import Graphics.Babylon.Mesh (Mesh)
 import UtilsInternal as UtilsInternal
 
@@ -25,6 +26,11 @@ sumIncCounter :: Int
 sumIncCounter = execState (do
               incCounter [2]
               incCounter [1]) 0
+
+-- currentCtx :: Scene.Scene -> Camera.CameraInstance -> UtilsInternal.Context
+-- currentCtx s c = execState (do
+--                 pure unit ) UtilsInternal.initContext s c
+
 -- createXRExp :: Scene.Scene -> {floorMeshes :: Array Mesh} -> String -> Effect Unit
 -- createXRExp :: UtilsInternal.Context -> {floorMeshes :: Array Mesh} -> String -> Effect Unit
 -- Note: the dummy parm at the end of the ffi.  This is absolutely necessary.
@@ -141,3 +147,8 @@ createDefaultXRExperienceAsync = fpi ["scene", "opts"]
     //return scene.createDefaultXRExperienceAsync(opts);
     return "hello";
   """
+
+enterXR :: Int -> Effect Unit
+-- enterXR :: {} -> Effect Unit
+enterXR n = do
+  log $ "now in EnterXR"
