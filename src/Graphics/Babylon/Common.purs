@@ -1,3 +1,7 @@
+-- This is kind of a catch-all for BABYLON functions that don't quite yet
+-- merit their own module (I'd have 50 little modules if I created a module every time
+-- I needed to call single methods).  Over time, it will probably become apparent that
+-- certain methods in here need to be placed in their own module.
 module Graphics.Babylon.Common where
 
 import Prelude
@@ -18,6 +22,10 @@ foreign import createXRExp5 :: UtilsInternal.ContextObj -> {floorMeshes :: Array
 
 foreign import data WebXRExperienceHelper :: Type
 foreign import data WebXRDefaultExperience :: Type
+foreign import data WebXRState :: Type
+
+instance showWebXRState :: Show WebXRState where
+  show = ffi ["s"] "'WebXRState=' + s"
 
 incCounter :: Array Int -> State Int Unit
 incCounter =  traverse_ \n -> modify \sum -> n + sum
@@ -148,7 +156,11 @@ createDefaultXRExperienceAsync = fpi ["scene", "opts"]
     return "hello";
   """
 
-enterXR :: Int -> Effect Unit
+-- enterXR :: Int -> Effect Unit
+-- Note: this gets activated when the "enter VR" button is clicked.
+enterXR :: WebXRState -> Effect Unit
 -- enterXR :: {} -> Effect Unit
-enterXR n = do
-  log $ "now in EnterXR"
+enterXR webXRState = do
+  -- let state = webXRState.ENTERING_XR
+  let state = webXRState
+  log $ "now in EnterXR, state=" <> show state

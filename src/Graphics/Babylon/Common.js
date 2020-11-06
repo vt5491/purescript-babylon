@@ -77,9 +77,11 @@ exports.createXRExp5 =  function (ctxObj) {
           // baseExperience.onStateChangedObservable.add(function (x) {console.log("hi from cb, x=", x)});
           // baseExperience.onStateChangedObservable.add((x) => {console.log("hi from cb, x=", x)});
           // baseExperience.onStateChangedObservable.add((x) => {console.log("hi from cb")});
-          baseExperience.onStateChangedObservable.add((x) => {
+          (PS["Graphics.Babylon.ControllerXR"].initXRCtrl)(XRExp)();
+          baseExperience.onStateChangedObservable.add((webXRState) => {
             console.log("hi from cb");
-            (PS["Graphics.Babylon.Common"].enterXR)(1)();});
+            (PS["Graphics.Babylon.Common"].enterXR)(webXRState)();
+          });
             // (PS["Graphics.Babylon.Common"].enterXR)(1);});
           // baseExperience.onStateChangedObservable.add(() => {return 7});
           // baseExperience.onInitialXRPoseSetObservable.add(() => {return 7})

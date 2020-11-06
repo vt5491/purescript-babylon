@@ -136,9 +136,10 @@ main ctx =
     -- launchAff_ $ affRead
     -- str <- launchAff_ getUrl
     -- following works
-    launchAff_ do
-      str <- getUrl "https://reqres.in/api/users/1"
-      log str
+    -- launchAff_ do
+      -- works..read an url asynchronously
+      -- str <- getUrl "https://reqres.in/api/users/1"
+      -- log str
     -- launchAff_ do
     --   str <- createXRExpAsync scene
     --   -- createXRExpAsync scene
@@ -150,8 +151,8 @@ main ctx =
     -- log str
     -- let affResult = copyFileAff
     -- log $ "affResult=" <> show affResult
-    let rInc = Common.sumIncCounter
-    log $ "BasicXRScene: sumIncCounter=" <> show rInc
+    -- let rInc = Common.sumIncCounter
+    -- log $ "BasicXRScene: sumIncCounter=" <> show rInc
     UtilsInternal.printCtx ctx
     log $ "BasicXRScene.main: about to call createXRExp5"
     -- newCtxObj <- Common.createXRExp (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
