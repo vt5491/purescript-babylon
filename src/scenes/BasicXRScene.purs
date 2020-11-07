@@ -22,6 +22,7 @@ import Graphics.Babylon.Math.Vector as Vector
 import Graphics.Babylon.Math.Quaternion as Quaternion
 -- import Graphics.Babylon.Math.Quaternion (quaternion, Axis)
 import Graphics.Babylon.Common as Common
+import Graphics.Babylon.WebXR as WebXR
 import Base as Base
 import Graphics.Babylon.Utils (ffi)
 import UtilsInternal as UtilsInternal
@@ -80,19 +81,19 @@ copyFileAff = do
     Left e -> log $ "There was a problem with copyFile: " <> message e
     _ -> pure unit
 
--- createDefaultXRExperienceAsync :: Aff Unit
--- createXRExpAsync :: Scene.Scene -> Aff Unit
-createXRExpAsync :: Scene.Scene -> Aff String
-createXRExpAsync scene = do
-  let ground = Mesh.getMeshByName scene "ground"
-      r      = Mesh.printMesh ground
-  -- Scene.createDefaultXRExperienceAsync scene {floorMeshes: [ground]}
-  result <- Common.createDefaultXRExperienceAsync scene {floorMeshes: [ground]}
-  -- result <- attempt Scene.createDefaultXRExperienceAsync $ copyFile "file1.txt" "file2.txt"
-  -- res <-
-  -- log $ "result=" <> show result
-  let msg = "abc"
-  pure msg
+-- -- createDefaultXRExperienceAsync :: Aff Unit
+-- -- createXRExpAsync :: Scene.Scene -> Aff Unit
+-- createXRExpAsync :: Scene.Scene -> Aff String
+-- createXRExpAsync scene = do
+--   let ground = Mesh.getMeshByName scene "ground"
+--       r      = Mesh.printMesh ground
+--   -- Scene.createDefaultXRExperienceAsync scene {floorMeshes: [ground]}
+--   result <- Common.createDefaultXRExperienceAsync scene {floorMeshes: [ground]}
+--   -- result <- attempt Scene.createDefaultXRExperienceAsync $ copyFile "file1.txt" "file2.txt"
+--   -- res <-
+--   -- log $ "result=" <> show result
+--   let msg = "abc"
+--   pure msg
 
 -- -- main :: Scene.Scene -> Effect Unit
 -- main :: Scene.Scene -> Aff Unit
@@ -158,7 +159,8 @@ main ctx =
     -- newCtxObj <- Common.createXRExp (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     -- let newCtxObj3 = Common.createXRExp3 (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     -- let newCtxObj4 = Common.createXRExp4 (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
-    let newCtxObj5 = Common.createXRExp5 (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
+    --vt-xlet newCtxObj5 = Common.createXRExp5 (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
+    let newCtxObj5 = WebXR.createXRExp (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     -- let newCtx3 = UtilsInternal.contextObjToContext $ newCtxObj3
     -- log $ "BasicXRScene: newCtxObj3=" <> show newCtxObj3
     -- log $ "BasicXRScene: newCtx3.scene=" <> show (UtilsInternal.getContextScene newCtx3)

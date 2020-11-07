@@ -1,4 +1,5 @@
 // createXRExp3 = ffi ["ctxObj", "opts", "cb", ""]
+// Note: this entire js file is defunct.  Delete all the text but leave the file.
 exports.createXRExp4 = function(ctxObj) {
   return function (opts) {
     return function (cb) {
@@ -17,6 +18,7 @@ exports.createXRExp4 = function(ctxObj) {
   }
 }
 
+// Note: defunct. replaced by WebXR.createXRExp
 exports.createXRExp5 =  function (ctxObj) {
   // function asyncHandler (scene, camera) {
   //   return new Promise( resolve => {

@@ -12,6 +12,8 @@ import Data.Array (head)
 -- import Data.Maybe (Maybe)
 import Data.Maybe
 import Foreign.Object as FO
+import Data.Array ((..), length)
+import Control.Plus (empty)
 
 type DummyInt = Int
 
@@ -90,36 +92,36 @@ createObj4 = ffi ["dummy_n"]
 -- createPSObj :: {a :: String, c :: Int} -> FO.Object {a :: String, c :: Int}
 -- createPSObj r = FO.insert
 
-printJsObj :: Effect Unit
--- printJsObj :: Effect (FO.Object String)
-printJsObj = do
-  -- let
-  --   jo = createObj 1
-  --   ks = FO.keys jo
-  -- printKeys ks
-   let
-     -- jo = createObj2 1
-     jo = createObj3 1
-     -- r = printKeys $ FO.keys (createObj2 1)
-     r = printKeys $ FO.keys jo
-     r2 = printVals $ FO.values jo
-   -- log $ "r=" <> r
-   pure unit
+-- printJsObj :: Effect Unit
+-- -- printJsObj :: Effect (FO.Object String)
+-- printJsObj = do
+--   -- let
+--   --   jo = createObj 1
+--   --   ks = FO.keys jo
+--   -- printKeys ks
+--    let
+--      -- jo = createObj2 1
+--      jo = createObj3 1
+--      -- r = printKeys $ FO.keys (createObj2 1)
+--      r = printKeys $ FO.keys jo
+--      r2 = printVals $ FO.values jo
+--    -- log $ "r=" <> r
+--    pure unit
 
-printJsObj2 :: Effect Unit
-printJsObj2 = do
-   let
-     jo = createObj3 1
-     r = printKeys $ FO.keys jo
-     r2 = printVals $ FO.values jo
-   pure unit
+-- printJsObj2 :: Effect Unit
+-- printJsObj2 = do
+--    let
+--      jo = createObj3 1
+--      r = printKeys $ FO.keys jo
+--      r2 = printVals $ FO.values jo
+--    pure unit
 
-printKeys :: Array String -> Effect Unit
-printKeys = ffi ["keys"]
-  """ (() => {
-    console.log("printKeys: keys=", keys);
-  })()
-  """
+-- printKeys :: Array String -> Effect Unit
+-- printKeys = ffi ["keys"]
+--   """ (() => {
+--     console.log("printKeys: keys=", keys);
+--   })()
+--   """
 
 printVals :: Array String -> Effect Unit
 printVals = ffi ["vals"]
@@ -132,18 +134,18 @@ printVals = ffi ["vals"]
 -- printObj :: forall a. FO.Object a -> Effect Unit
 -- printObj :: forall a. FO.Object a ->  Unit
 -- printObj :: forall a. Int -> FO.Object a  -> Effect Unit
-printObj :: forall b. Int -> FO.Object Int  -> Effect Unit
-printObj n o =
-  let
-    keys = FO.keys o
-  in
-    ffi ["keys"]
-    """((keys) => {
-      //console.log("printObj: o=", o);
-      console.log("printObj: keys=", keys);
-      //return 7
-    })()
-    """
+-- printObj :: forall b. Int -> FO.Object Int  -> Effect Unit
+-- printObj n o =
+--   let
+--     keys = FO.keys o
+--   in
+--     ffi ["keys"]
+--     """((keys) => {
+--       //console.log("printObj: o=", o);
+--       console.log("printObj: keys=", keys);
+--       //return 7
+--     })()
+--     """
 -- printObj = log $ "hi"
 -- printObj obj = do
 --   log $ "hi"
@@ -220,3 +222,36 @@ fred = {name: "fred", id: 69}
 -- var newCtxObj = Graphics_Babylon_Common.createXRExp2(UtilsInternal.contextToObj(ctx))({
 --               floorMeshes: [ ground ]
 --           })("myCB")();
+
+arrayDo :: Array Int
+-- arrayDo :: Array (Array Int)
+arrayDo =
+  let sum = 1
+  in do
+    x <- 1..4
+    -- let sum = sum + x
+    -- sum + x
+    -- y <- 1..3
+    -- log $ "x+y=" <> show  (length  x )
+    -- log $ "x+y=" <> show  (x + y)
+    -- x <- [1,2]
+    pure $ x + sum
+
+countThrows :: Int -> Array (Array Int)
+countThrows n = do
+  x <- 1 .. 6
+  y <- 1 .. 6
+  if x + y == n
+    then pure [x, y]
+    else empty
+
+intDo :: Array Int
+intDo =
+  let s = 0
+  in do
+    -- x <- 1
+    z <- [2]
+    let x = 1
+        y = 2
+    -- r <- x + y
+    [7]

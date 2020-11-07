@@ -1,4 +1,5 @@
-module Graphics.Babylon.ControllerXR where
+-- module Graphics.Babylon.ControllerXR where
+module ControllerXR where
 
 import Prelude
 import Effect (Effect)
@@ -17,10 +18,18 @@ type Callback = String
 -- data WebXRInput = WebXRInput {
 --     uniqueId  :: Int
 -- }
-foreign import data WebXRInput :: Type
+type WebXRInput = {
+  -- uniqueId :: Int
+  uniqueId :: String
+}
+-- foreign import data WebXRInput :: Type
 
-instance showWebXRInput :: Show WebXRInput where
-  show = ffi ["ctrl"] "'showWebXRInput: ctrl=' + ctrl + ', uniqueId=' + ctrl.uniqueId;"
+-- instance showWebXRInput :: Show WebXRInput where
+--   show = ffi ["ctrl"] "'showWebXRInput: ctrl=' + ctrl + ', uniqueId=' + ctrl.uniqueId;"
+--   -- show (WebXRInput wxi) = "showWebXRInput (ps style)= uniqueId=" <> show wxi.uniqueId
+
+-- showIt :: WebXRInput -> String
+-- showIt wxi = "wxi.uniqueId=" <> show wxi.uniqueId
 
 -- This gets driven after the "enter vr" btn is clicked (by the setup of 'initControllerAddedObservable').
 -- ctrlAdded :: Effect Unit
@@ -30,7 +39,8 @@ ctrlAdded ctrl = do
   log $ "*****ctrlAdd: entered"
   -- log $ "ctrlAdd: WebXRInput.uniqueId=" <> show ctrl.uniqueId
   -- ctx@(UtilsInternal.Context c) <- MainScene.runMainScene
-  log $ "***ctrlAdded: WebXRInput.uniqueId (js style)=" <> show ctrl
+  -- log $ "***ctrlAdded: WebXRInput.uniqueId (js style)=" <> show ctrl
+  log $ "***ctrlAdded: WebXRInput.uniqueId (ps style)=" <> show ctrl
   -- let uniqueId = ctrl.uniqueId
   -- let uniqueId = cont@(WebXRInput c)
   -- cont@(WebXRInput c) <- ctrl
@@ -48,12 +58,13 @@ initControllerAddedObservable = fpi ["xrExp", ""]
   console.log("controllerAddedObservable.js: entered");
   //debugger;
   xrExp.input.onControllerAddedObservable.add((xrCtrl) => {
-    (PS["Graphics.Babylon.ControllerXR"].ctrlAdded);
+    //(PS["Graphics.Babylon.ControllerXR"].ctrlAdded);
     //(PS["Graphics.Babylon.ControllerXR"].ctrlAdded)();
     //(PS["Graphics.Babylon.ControllerXR"].ctrlAdded)({uniqueId: 7})();
     // best so far
     //(PS["Graphics.Babylon.ControllerXR"].ctrlAdded)()();
-    (PS["Graphics.Babylon.ControllerXR"].ctrlAdded)(xrCtrl)();
+    //(PS["Graphics.Babylon.ControllerXR"].ctrlAdded)(xrCtrl)();
+    (PS["ControllerXR"].ctrlAdded)(xrCtrl)();
   });
   return 1;
   """

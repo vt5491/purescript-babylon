@@ -16,7 +16,9 @@ import Base as Base
 import Graphics.Babylon.Mesh as Mesh
 -- import Graphics.Babylon.Common (WebXRExperienceHelper )
 import Graphics.Babylon.Common as Common
-import Graphics.Babylon.ControllerXR as Controller
+import Graphics.Babylon.WebXR as WebXR
+-- import Graphics.Babylon.ControllerXR as Controller
+import ControllerXR as Controller
 -- subscenes
 import Scenes.HelloWorldScene as HelloWorldScene
 import Scenes.LoadModelScene as LoadModelScene
@@ -53,6 +55,7 @@ forceExportMeshLoadedPS meshes = LoadModelScene.meshLoadedPS meshes
 -- forceExportInitXR :: Common.WebXRExperienceHelper -> UtilsInternal.Context -> Effect Unit
 -- forceExportInitXR xrHelper ctx = Common.initXR xrHelper ctx
 -- forceExportInitXR :: Common.WebXRExperienceHelper -> UtilsInternal.ContextObj -> Effect Unit
+-- TODO: update to use WebXR.WebXRExperienceHelper
 forceExportInitXR :: Common.WebXRExperienceHelper -> UtilsInternal.ContextObj -> Effect UtilsInternal.ContextObj
 forceExportInitXR xrHelper ctxObj = Common.initXR xrHelper ctxObj
 
@@ -62,8 +65,10 @@ forceExportInitXR3 xrHelper ctxObj = Common.initXR3 xrHelper ctxObj
 forceExportDummyMainScene :: Int -> Int
 forceExportDummyMainScene n = MainScene.dummyMainScene n
 
-forceExportEnterXR :: Common.WebXRState -> Effect Unit
-forceExportEnterXR s = Common.enterXR s
+-- forceExportEnterXR :: Common.WebXRState -> Effect Unit
+-- forceExportEnterXR s = Common.enterXR s
+forceExportEnterXR :: WebXR.WebXRState -> Effect Unit
+forceExportEnterXR s = WebXR.enterXR s
 -- forceExportIncClick :: Effect Unit
 -- forceExportIncClick = MainScene.incClick
 

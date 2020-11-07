@@ -19,14 +19,14 @@ import UtilsInternal as UtilsInternal
 
 foreign import createXRExp4 :: UtilsInternal.ContextObj -> {floorMeshes :: Array Mesh} -> String -> UtilsInternal.ContextObj
 foreign import createXRExp5 :: UtilsInternal.ContextObj -> {floorMeshes :: Array Mesh} -> String -> UtilsInternal.ContextObj
-
+-- defunct start
 foreign import data WebXRExperienceHelper :: Type
 foreign import data WebXRDefaultExperience :: Type
 foreign import data WebXRState :: Type
 
 instance showWebXRState :: Show WebXRState where
   show = ffi ["s"] "'WebXRState=' + s"
-
+--defunct end
 incCounter :: Array Int -> State Int Unit
 incCounter =  traverse_ \n -> modify \sum -> n + sum
 
@@ -148,6 +148,7 @@ initXR3 xrh ctxObj =
 --   """
 
 -- createDefaultXRExperienceAsync :: Scene.Scene -> {floorMeshes :: Array Mesh} -> Aff Unit
+-- defunct: moved to WebXR..no just no longer used
 createDefaultXRExperienceAsync :: Scene.Scene -> {floorMeshes :: Array Mesh} -> Aff String
 createDefaultXRExperienceAsync = fpi ["scene", "opts"]
   """
@@ -158,6 +159,7 @@ createDefaultXRExperienceAsync = fpi ["scene", "opts"]
 
 -- enterXR :: Int -> Effect Unit
 -- Note: this gets activated when the "enter VR" button is clicked.
+-- Defunct: moved to WebXR
 enterXR :: WebXRState -> Effect Unit
 -- enterXR :: {} -> Effect Unit
 enterXR webXRState = do
