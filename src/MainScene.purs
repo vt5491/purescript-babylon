@@ -19,6 +19,8 @@ import Base as Base
 -- import Data.Foreign
 -- subscenes
 import Scenes.HelloWorldScene as HelloWorldScene
+-- import Graphics.Babylon.GlobalTypes (ContextObj, GameContext)
+import GlobalTypes as GlobalTypes
 
 -- foreign import dummy_js_7 :: Number
 foreign import foo :: Number -> Number -> Number -> Number
@@ -28,6 +30,9 @@ foreign import green5 :: Effect Base.Color3
 
 dummyMainScene ::  Int -> Int
 dummyMainScene n = 8
+
+dummyReadGameCtx :: GlobalTypes.GameContext
+dummyReadGameCtx = GlobalTypes.getGameContext
 
 currentCtx :: Scene.Scene -> Camera.CameraInstance -> UtilsInternal.Context
 currentCtx s c = UtilsInternal.createContext s c
@@ -57,8 +62,10 @@ runMainScene =
       dummyObj = {a: 7, b: 8}
       canvas = Scene.getCanvasById "renderCanvas"
       foo_r = foo 1.0 2.0 3.0
+      -- gameCtx = GlobalTypes.initGameContext
   in do
     log "hello from MainScene toplevel"
+    gameCtx <- GlobalTypes.initGameContext
     log $ "foo_r=" <> show foo_r
     engine       <- Engine.createEngine canvas
     UtilsInternal.addResizeListener engine

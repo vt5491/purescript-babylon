@@ -14,6 +14,9 @@ import Data.Maybe
 import Foreign.Object as FO
 import Data.Array ((..), length)
 import Control.Plus (empty)
+import Data.String.Regex (match, search)
+import Data.String.Regex.Flags (noFlags)
+import Data.String.Regex.Unsafe (unsafeRegex)
 
 type DummyInt = Int
 
@@ -255,3 +258,30 @@ intDo =
         y = 2
     -- r <- x + y
     [7]
+
+  -- pure $ case result of
+caseTest2 :: Int
+caseTest2 = case (1 == 1) of
+  true -> 17
+  false -> 18
+
+caseTest :: Int -> Int
+caseTest n = case n of
+  1 -> 7
+  _ -> 8
+
+reTest :: Boolean
+reTest =
+  let re = unsafeRegex "^abc" noFlags
+      idx = search re "abc"
+      in case idx of
+        Just n -> true
+        Nothing -> false
+
+reTest2 :: Boolean
+reTest2 =
+  let re = unsafeRegex "^abc" noFlags
+      idx = search re "abc"
+      in
+        if isJust idx then true
+        else  false

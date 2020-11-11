@@ -20,20 +20,20 @@ import UtilsInternal as UtilsInternal
 foreign import createXRExp4 :: UtilsInternal.ContextObj -> {floorMeshes :: Array Mesh} -> String -> UtilsInternal.ContextObj
 foreign import createXRExp5 :: UtilsInternal.ContextObj -> {floorMeshes :: Array Mesh} -> String -> UtilsInternal.ContextObj
 -- defunct start
-foreign import data WebXRExperienceHelper :: Type
-foreign import data WebXRDefaultExperience :: Type
-foreign import data WebXRState :: Type
-
-instance showWebXRState :: Show WebXRState where
-  show = ffi ["s"] "'WebXRState=' + s"
+-- foreign import data WebXRExperienceHelper :: Type
+-- foreign import data WebXRDefaultExperience :: Type
+-- foreign import data WebXRState :: Type
+--
+-- instance showWebXRState :: Show WebXRState where
+--   show = ffi ["s"] "'WebXRState=' + s"
 --defunct end
 incCounter :: Array Int -> State Int Unit
 incCounter =  traverse_ \n -> modify \sum -> n + sum
 
-sumIncCounter :: Int
-sumIncCounter = execState (do
-              incCounter [2]
-              incCounter [1]) 0
+-- sumIncCounter :: Int
+-- sumIncCounter = execState (do
+--               incCounter [2]
+--               incCounter [1]) 0
 
 -- currentCtx :: Scene.Scene -> Camera.CameraInstance -> UtilsInternal.Context
 -- currentCtx s c = execState (do
@@ -112,31 +112,31 @@ createXRExp3 = ffi ["ctxObj", "opts", "cb", ""]
 -- initXR xrh =
 -- initXR :: WebXRExperienceHelper -> UtilsInternal.Context -> Effect Unit
 -- initXR :: WebXRExperienceHelper -> UtilsInternal.ContextObj -> Effect Unit
-initXR :: WebXRExperienceHelper -> UtilsInternal.ContextObj -> Effect UtilsInternal.ContextObj
--- initXR xrh ctx =
-initXR xrh ctxObj =
-  let r = "initXR: abc"
-      -- scene = UtilsInternal.getContextScene ctx
-      -- camera = UtilsInternal.getContextCamera ctx
-      scene = ctxObj.scene
-      camera = ctxObj.camera
-      newCtxObj = ctxObj { camera = camera}
-  in do
-    log $ "r=" <> r
-    log $ "initXR: scene=" <> show scene <> ", camera=" <> show camera
-    -- log $ "initXR: newCtxObj=" <> show newCtxObj
-    -- pure newCtxObj
-    -- pure unit
-    pure  {scene: scene, camera: camera}
-    -- pure ctxObj
-    -- newCtxObj
+-- initXR :: WebXRExperienceHelper -> UtilsInternal.ContextObj -> Effect UtilsInternal.ContextObj
+-- -- initXR xrh ctx =
+-- initXR xrh ctxObj =
+--   let r = "initXR: abc"
+--       -- scene = UtilsInternal.getContextScene ctx
+--       -- camera = UtilsInternal.getContextCamera ctx
+--       scene = ctxObj.scene
+--       camera = ctxObj.camera
+--       newCtxObj = ctxObj { camera = camera}
+--   in do
+--     log $ "r=" <> r
+--     log $ "initXR: scene=" <> show scene <> ", camera=" <> show camera
+--     -- log $ "initXR: newCtxObj=" <> show newCtxObj
+--     -- pure newCtxObj
+--     -- pure unit
+--     pure  {scene: scene, camera: camera}
+--     -- pure ctxObj
+--     -- newCtxObj
 
-initXR3 :: WebXRExperienceHelper -> UtilsInternal.ContextObj -> UtilsInternal.ContextObj
-initXR3 xrh ctxObj =
-  let scene = ctxObj.scene
-      camera = ctxObj.camera
-      r = UtilsInternal.printCtxObj "initXR3" ctxObj
-  in {scene: scene, camera: camera}
+-- initXR3 :: WebXRExperienceHelper -> UtilsInternal.ContextObj -> UtilsInternal.ContextObj
+-- initXR3 xrh ctxObj =
+--   let scene = ctxObj.scene
+--       camera = ctxObj.camera
+--       r = UtilsInternal.printCtxObj "initXR3" ctxObj
+--   in {scene: scene, camera: camera}
 
 -- initXR xrh = fpi ["xhr", "ctxObj"]
 --   """
@@ -160,9 +160,9 @@ createDefaultXRExperienceAsync = fpi ["scene", "opts"]
 -- enterXR :: Int -> Effect Unit
 -- Note: this gets activated when the "enter VR" button is clicked.
 -- Defunct: moved to WebXR
-enterXR :: WebXRState -> Effect Unit
--- enterXR :: {} -> Effect Unit
-enterXR webXRState = do
-  -- let state = webXRState.ENTERING_XR
-  let state = webXRState
-  log $ "now in EnterXR, state=" <> show state
+-- enterXR :: WebXRState -> Effect Unit
+-- -- enterXR :: {} -> Effect Unit
+-- enterXR webXRState = do
+--   -- let state = webXRState.ENTERING_XR
+--   let state = webXRState
+--   log $ "now in EnterXR, state=" <> show state

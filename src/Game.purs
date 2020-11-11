@@ -10,7 +10,8 @@ import Data.Foldable (traverse_)
 -- import Examples.LoadModel (mainLoadModel)
 -- import Examples.HelloWorld (mainHelloWorld)
 -- import MainScene (runMainScene, dummyMainScene)
-import MainScene (runMainScene, dummyMainScene) as MainScene
+-- import MainScene (runMainScene, dummyMainScene) as MainScene
+import MainScene as MainScene
 import Graphics.Babylon.Scene (uid)
 import Base as Base
 import Graphics.Babylon.Mesh as Mesh
@@ -25,6 +26,8 @@ import Scenes.LoadModelScene as LoadModelScene
 import Scenes.LoadModelScene (meshLoadedPS)
 import Scenes.BasicXRScene as BasicXRScene
 import UtilsInternal as UtilsInternal
+-- import Graphics.Babylon.GlobalTypes as GlobalTypes
+import GlobalTypes as GlobalTypes
 
 dummy :: Int
 dummy = 7
@@ -33,11 +36,11 @@ dummy = 7
 -- -- incCounter :: Int -> State Int Int
 -- incCounter =  traverse_ \n -> modify \sum -> n + sum
 
-sumArray :: Array Int -> State Int Unit
-sumArray = traverse_ \n -> modify \sum -> sum + n
-
-sumArrayExec = execState (do
-              sumArray [1,2,3]) 0
+-- sumArray :: Array Int -> State Int Unit
+-- sumArray = traverse_ \n -> modify \sum -> sum + n
+--
+-- sumArrayExec = execState (do
+--               sumArray [1,2,3]) 0
 
 -- sumIncCounter = execState (do
 --               incCounter [2]
@@ -56,11 +59,11 @@ forceExportMeshLoadedPS meshes = LoadModelScene.meshLoadedPS meshes
 -- forceExportInitXR xrHelper ctx = Common.initXR xrHelper ctx
 -- forceExportInitXR :: Common.WebXRExperienceHelper -> UtilsInternal.ContextObj -> Effect Unit
 -- TODO: update to use WebXR.WebXRExperienceHelper
-forceExportInitXR :: Common.WebXRExperienceHelper -> UtilsInternal.ContextObj -> Effect UtilsInternal.ContextObj
-forceExportInitXR xrHelper ctxObj = Common.initXR xrHelper ctxObj
+-- forceExportInitXR :: Common.WebXRExperienceHelper -> UtilsInternal.ContextObj -> Effect UtilsInternal.ContextObj
+-- forceExportInitXR xrHelper ctxObj = Common.initXR xrHelper ctxObj
 
-forceExportInitXR3 :: Common.WebXRExperienceHelper -> UtilsInternal.ContextObj -> UtilsInternal.ContextObj
-forceExportInitXR3 xrHelper ctxObj = Common.initXR3 xrHelper ctxObj
+-- forceExportInitXR3 :: Common.WebXRExperienceHelper -> UtilsInternal.ContextObj -> UtilsInternal.ContextObj
+-- forceExportInitXR3 xrHelper ctxObj = Common.initXR3 xrHelper ctxObj
 
 forceExportDummyMainScene :: Int -> Int
 forceExportDummyMainScene n = MainScene.dummyMainScene n
@@ -72,13 +75,26 @@ forceExportEnterXR s = WebXR.enterXR s
 -- forceExportIncClick :: Effect Unit
 -- forceExportIncClick = MainScene.incClick
 
-forceInitXRCtrl :: Common.WebXRDefaultExperience -> Effect Unit
+-- forceInitXRCtrl :: Common.WebXRDefaultExperience -> Effect Unit
+forceInitXRCtrl :: WebXR.WebXRDefaultExperience -> Effect Unit
 forceInitXRCtrl xrExp= Controller.initXRCtrl xrExp
 
 -- forceCtrlAdded :: Effect Unit
 -- forceCtrlAdded = Controller.ctrlAdded
-forceCtrlAdded :: Controller.WebXRInput -> Effect Unit
+-- forceCtrlAdded :: Controller.WebXRInput -> Effect Unit
+forceCtrlAdded :: WebXR.WebXRInput -> Effect Unit
 forceCtrlAdded ctrl = Controller.ctrlAdded ctrl
+
+forceExportDummyReadGameCtx :: GlobalTypes.GameContext
+forceExportDummyReadGameCtx = MainScene.dummyReadGameCtx
+
+forceExportGetGameContext :: GlobalTypes.GameContext
+forceExportGetGameContext = GlobalTypes.getGameContext
+
+-- forceExportSetGameContext :: Int -> GlobalTypes.GameContext
+-- forceExportSetGameContext n = GlobalTypes.setGameContext n
+forceExportSetGameContext :: WebXR.WebXRInputSource -> GlobalTypes.GameContext
+forceExportSetGameContext ctrl = GlobalTypes.setGameContext ctrl
 
 -- initXR :: WebXRExperienceHelper -> String
 main :: Effect Unit
@@ -135,10 +151,10 @@ main = do
                           BasicXRScene.main ctx
                           -- let r = execState (do
                           --   sumArray [1,2,3]) 0
-                          let r = sumArrayExec
-                          log $ "sumArrayExec=" <> show r
-                          let r2 = Common.sumIncCounter
-                          log $ "sumIncCounter=" <> show r2
+                          -- let r = sumArrayExec
+                          -- log $ "sumArrayExec=" <> show r
+                          -- let r2 = Common.sumIncCounter
+                          -- log $ "sumIncCounter=" <> show r2
                           pure unit
       _           -> log "Unknown Scene specified"
   pure unit

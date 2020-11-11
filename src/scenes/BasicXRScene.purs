@@ -27,6 +27,10 @@ import Base as Base
 import Graphics.Babylon.Utils (ffi)
 import UtilsInternal as UtilsInternal
 
+import GlobalTypes (ContextObj)
+import Graphics.Babylon.Mesh (Mesh)
+import Graphics.Babylon.Utils (ffi, fpi)
+
 getUrl :: String -> Aff String
 -- getUrl :: String -> Aff Unit
 getUrl url = do
@@ -81,6 +85,47 @@ copyFileAff = do
     Left e -> log $ "There was a problem with copyFile: " <> message e
     _ -> pure unit
 
+-- Note: this needs to be here at the user level, not the backend level, since it reference GameContext
+-- and thus is app level.  Putting it in "system" code generates circular dependencies.
+createXRExp :: ContextObj -> {floorMeshes :: Array Mesh} -> String -> ContextObj
+-- createXRExp = fpi ["ctxObj", "opts", "cb", ""]
+createXRExp = fpi ["ctxObj", "opts", "cb"]
+  """
+      let scene = ctxObj.scene;
+      let camera = ctxObj.camera;
+      console.log("WebXR.createXRExp: scene=", scene, ",opts=", opts);
+      //result = await asyncHandler(scene, camera, opts);
+      // console.log("createXRExp5: result=", result);
+      scene.createDefaultXRExperienceAsync(opts)
+        .then((XRExp) => {
+          console.log("asyncHandler2 loaded XRexp=", XRExp);
+          console.log("asyncHandler2 loaded ctxObj=", ctxObj);
+          console.log("WebXR.CreateXRExp: baseExperience=", XRExp.baseExperience );
+          let baseExperience = XRExp.baseExperience;
+          if (! BABYLON.VT) {
+            BABYLON.VT = {};
+          }
+          BABYLON.VT.active_camera = baseExperience.camera;
+          //baseExperience.onStateChangedObservable = PS["Graphics.Babylon.Common"].enterXR(1);
+          //baseExperience.onStateChangedObservable.add = () => {console.log("hi from cb")};
+          // baseExperience.onStateChangedObservable.add(function (x) {console.log("hi from cb, x=", x)});
+          // baseExperience.onStateChangedObservable.add((x) => {console.log("hi from cb, x=", x)});
+          // baseExperience.onStateChangedObservable.add((x) => {console.log("hi from cb")});
+          //(PS["Graphics.Babylon.ControllerXR"].initXRCtrl)(XRExp)();
+          (PS["ControllerXR"].initXRCtrl)(XRExp)();
+          baseExperience.onStateChangedObservable.add((webXRState) => {
+            console.log("hi from cb");
+            //vt-x(PS["Graphics.Babylon.Common"].enterXR)(webXRState)();
+            (PS["Graphics.Babylon.WebXR"].enterXR)(webXRState)();
+          });
+            // (PS["Graphics.Babylon.Common"].enterXR)(1);});
+          // baseExperience.onStateChangedObservable.add(() => {return 7});
+          // baseExperience.onInitialXRPoseSetObservable.add(() => {return 7})
+          console.log("added observer");
+
+          // resolve({scene: scene, camera: camera, abc: 7});
+        })
+  """
 -- -- createDefaultXRExperienceAsync :: Aff Unit
 -- -- createXRExpAsync :: Scene.Scene -> Aff Unit
 -- createXRExpAsync :: Scene.Scene -> Aff String
@@ -160,7 +205,8 @@ main ctx =
     -- let newCtxObj3 = Common.createXRExp3 (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     -- let newCtxObj4 = Common.createXRExp4 (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     --vt-xlet newCtxObj5 = Common.createXRExp5 (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
-    let newCtxObj5 = WebXR.createXRExp (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
+    -- let newCtxObj5 = WebXR.createXRExp (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
+    let newCtxObj5 = createXRExp (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     -- let newCtx3 = UtilsInternal.contextObjToContext $ newCtxObj3
     -- log $ "BasicXRScene: newCtxObj3=" <> show newCtxObj3
     -- log $ "BasicXRScene: newCtx3.scene=" <> show (UtilsInternal.getContextScene newCtx3)

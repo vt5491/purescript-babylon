@@ -11,7 +11,9 @@ import Graphics.Babylon.Engine (Engine)
 import Graphics.Babylon.Utils (ffi, fpi)
 import Graphics.Babylon.Scene (Scene)
 import Graphics.Babylon.Camera (CameraInstance)
+import Graphics.Babylon.WebXR (WebXRInputSource)
 
+-- TODO: rename to something like GameContext to make its intent clearer
 -- Context
 -- Note: update Context and ContextObj in unison
 data Context = Context {
@@ -24,6 +26,12 @@ type ContextObj = {
     scene     :: Scene
   , camera    :: CameraInstance
 }
+
+-- type GameContext = {
+--     scene     :: Scene
+--   , camera    :: CameraInstance
+--     leftCtrlXR :: WebXRInputSource
+-- }
 
 instance showContext :: Show Context where
   -- show Context {scene: s, camera: c} = "scene=" <> show s
