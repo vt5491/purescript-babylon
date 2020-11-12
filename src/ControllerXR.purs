@@ -20,6 +20,10 @@ import GlobalTypes as GlobalTypes
 -- CBLiteral = callback literal
 -- type CBLiteral = String
 type Callback = String
+-- foreign import XRAppHelper :: Effect Unit
+-- foreign import data XRAppHelper :: Type
+-- foreign import xrAppHelper :: Effect Unit
+-- foreign import encodeURIComponent :: String -> String
 -- WebXRInput
 -- this is a purescript level definition of foreign type WebXRInput
 -- data WebXRInput = WebXRInput {
@@ -42,6 +46,44 @@ type Callback = String
 
 -- showIt :: WebXRInput -> String
 -- showIt wxi = "wxi.uniqueId=" <> show wxi.uniqueId
+-- debuggerHelper :: XRAppHelperType -> Int -> Effect Unit
+-- debuggerHelper = fpi ["x", "x2"]
+--   """
+--        console.log("hi from debuggerHelper");
+--        debugger;
+--   """
+-- type XRAppHelperType = {abc :: Int, dummy :: Int -> Effect Unit, setupXR :: GlobalTypes.DummyInt -> Effect Unit}
+type XRAppHelperType = {
+  abc :: Int,
+  dummy :: Int -> Effect Unit,
+  setupXR :: WebXR.WebXRDefaultExperienceOptions -> Effect Unit}
+-- foreign import xrAppHelper :: {abc :: Int, dummy :: Int -> Effect Unit}
+foreign import xrAppHelper :: XRAppHelperType
+
+debuggerHelper :: XRAppHelperType -> Effect Unit
+debuggerHelper = fpi ["x"]
+  """
+       console.log("hi from debuggerHelper");
+       debugger;
+  """
+
+init :: WebXR.WebXRDefaultExperienceOptions -> Effect Unit
+init opts =
+  let a = 7
+      xr_app_helper = xrAppHelper
+  in do
+    -- xrAppHelper
+    let abc = xr_app_helper.abc
+    -- debuggerHelper xr_app_helper 1
+    log $ "ControllerXR.init: abc=" <> show abc
+    let r = xr_app_helper.dummy
+    let r2 = r 1
+    -- r2
+    -- let r3 = xr_app_helper.setupXR 1
+    -- xr_app_helper.setupXR 1
+    -- xr_app_helper.setupXR opts
+    let r3 = xr_app_helper.setupXR opts
+    pure unit
 
 -- This gets driven after the "enter vr" btn is clicked (by the setup of 'initControllerAddedObservable').
 -- ctrlAdded :: Effect Unit

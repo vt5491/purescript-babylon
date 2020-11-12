@@ -12,7 +12,7 @@ import Graphics.Babylon.Mesh as Mesh
 import Graphics.Babylon.Material as Material
 import Graphics.Babylon.Light as Light
 import Math (pi)
-import Graphics.Babylon.Utils (ffi, oneDeg)
+import Graphics.Babylon.Utils (ffi, fpi, oneDeg)
 -- import UtilsInternal (addResizeListener, Context)
 import UtilsInternal as UtilsInternal
 import Base as Base
@@ -45,6 +45,24 @@ debuggerMat = ffi ["x"]
      }
   """
 
+-- Init the BABYLON.VT hash
+initJsAppGlobal :: Effect Unit
+-- initJsAppGlobal :: GlobalTypes.DummyInt -> Effect Unit
+-- initJsAppGlobal n = log $ "hi from initJsAppGlobal"
+-- initJsAppGlobal = ffi ["n"]
+--   """(function () {
+--         console.log("initJsAppGlobal: entered");
+--         BABYLON.VT = {};
+--   })()
+--   """
+initJsAppGlobal = fpi [""]
+  """
+          console.log("initJsAppGlobal: entered");
+          //if (! BABYLON.VT) {
+          BABYLON.VT = {};
+          //}
+  """
+
 renderFn =  ffi ["scene"]
       """(function () {
             //console.log("now in renderFn");
@@ -70,6 +88,9 @@ runMainScene =
     engine       <- Engine.createEngine canvas
     UtilsInternal.addResizeListener engine
     scene        <- Scene.create engine
+    -- let rAppGlobal = initJsAppGlobal 1
+    -- initJsAppGlobal 1
+    initJsAppGlobal
     Scene.setActiveScene scene
     camera <- Camera.createArcRotate "camera" (oneDeg * 90.0) (oneDeg * 90.0) (45.0)  (Vector.createVector3 0.0 0.0 0.0)
     let ctx = UtilsInternal.initContext scene camera

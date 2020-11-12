@@ -23,6 +23,7 @@ import Graphics.Babylon.Math.Quaternion as Quaternion
 -- import Graphics.Babylon.Math.Quaternion (quaternion, Axis)
 import Graphics.Babylon.Common as Common
 import Graphics.Babylon.WebXR as WebXR
+import ControllerXR as ControllerXR
 import Base as Base
 import Graphics.Babylon.Utils (ffi)
 import UtilsInternal as UtilsInternal
@@ -206,20 +207,22 @@ main ctx =
     -- let newCtxObj4 = Common.createXRExp4 (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     --vt-xlet newCtxObj5 = Common.createXRExp5 (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     -- let newCtxObj5 = WebXR.createXRExp (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
-    let newCtxObj5 = createXRExp (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
+    let opts = {floorMeshes: [ground]} :: WebXR.WebXRDefaultExperienceOptions
+    --vt-xlet newCtxObj5 = createXRExp (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     -- let newCtx3 = UtilsInternal.contextObjToContext $ newCtxObj3
     -- log $ "BasicXRScene: newCtxObj3=" <> show newCtxObj3
     -- log $ "BasicXRScene: newCtx3.scene=" <> show (UtilsInternal.getContextScene newCtx3)
     -- UtilsInternal.printCtx newCtx3
-    UtilsInternal.printCtxObj  "loca"  newCtxObj5
+    -- UtilsInternal.printCtxObj  "loca"  newCtxObj5
     -- log $ "BasicXRScene: newCtxObj3=" <> newCtxObj3
     -- log $ "BasicXRScene:r2=" <> r2
     -- log $ "BasicXRScene:r1=" <> r1
-    log $ "camera1=" <> camera1
+    -- log $ "camera1=" <> camera1
     -- let newCameraStr = "new camera=" <> show (newCtxObj3.camera)
     -- let newCameraStr = "new camera="
     -- log $ "result=" <> result
   --   log $ "BasicXRScene.main: entered" <> show 7
   --   -- result <- Common.createXRExp scene {floorMeshes: [ground]} "myCb"
+    ControllerXR.init opts
     log  "xr enabled now"
     pure unit

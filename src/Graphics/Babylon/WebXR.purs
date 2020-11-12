@@ -19,6 +19,7 @@ foreign import data WebXRExperienceHelper :: Type
 foreign import data WebXRDefaultExperience :: Type
 foreign import data WebXRState :: Type
 foreign import data WebXRAbstractMotionController :: Type
+-- foreign import data WebXRDefaultExperienceOptions :: Type
 
 instance showWebXRState :: Show WebXRState where
   show = ffi ["s"] "'WebXRState=' + s"
@@ -31,6 +32,8 @@ type WebXRInput = {
 type WebXRInputSource = {
   uniqueId :: String
 }
+
+type WebXRDefaultExperienceOptions = { floorMeshes :: Array Mesh }
 -- -- createXRExp :: UtilsInternal.ContextObj -> {floorMeshes :: Array Mesh} -> String -> UtilsInternal.ContextObj
 -- createXRExp :: ContextObj -> {floorMeshes :: Array Mesh} -> String -> ContextObj
 -- -- createXRExp = fpi ["ctxObj", "opts", "cb", ""]

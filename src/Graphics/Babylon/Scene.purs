@@ -43,7 +43,8 @@ uid = ffi ["scene"] "(() => {return scene.uid})()"
 -- following is a hack
 setActiveScene :: Scene -> Effect Unit
 setActiveScene = ffi["scene"]
-  "(function () {BABYLON.VT_active_scene=scene})"
+  -- "(function () {BABYLON.VT_active_scene=scene})"
+  "(function () {BABYLON.VT.active_scene = scene})"
 -- end hack
 getScene :: Int -> Scene
 getScene = ffi [""]

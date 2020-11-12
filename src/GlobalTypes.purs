@@ -16,6 +16,8 @@ import Graphics.Babylon.Utils (ffi, fpi)
 --   , camera    :: CameraInstance
 --     leftCtrlXR :: WebXRInputSource
 -- }
+type DummyInt = Int
+
 data Context = Context {
 -- type Context = Context {
     scene       :: Scene
