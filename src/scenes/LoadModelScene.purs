@@ -6,6 +6,7 @@ import Effect (Effect)
 import Effect.Console (log, logShow)
 import Data.Semigroup ((<>))
 import Graphics.Babylon.SceneLoader as SceneLoader
+import Graphics.Babylon.Engine    as Engine
 import Graphics.Babylon.Scene    as Scene
 import Graphics.Babylon.Mesh as Mesh
 import Graphics.Babylon.Math.Vector as Vector
@@ -25,6 +26,12 @@ import UtilsInternal as UtilsInternal
 cb2 :: Int -> Effect Unit
 cb2 n = log $ "now in cb2, n=" <> (show n)
 
+renderFn =  ffi ["scene"]
+      """(function () {
+            scene.render();
+          })
+      """
+      
 meshLoaded :: Effect Unit
 meshLoaded = log $ "now in meshLoaded"
 
@@ -113,6 +120,7 @@ main :: UtilsInternal.Context -> Effect Unit
 -- main scene = do
 main ctx = do
   let d = dummy
+      engine = UtilsInternal.getContextEngine ctx
   let scene = UtilsInternal.getContextScene ctx
   -- log $ "LoadModelScene.main: abf" <> "\n" <> "def" <> show d
   -- let d2 = show meshLoadedPS
@@ -136,4 +144,5 @@ main ctx = do
     -- meshLoadedPS
     -- meshLoadedPS2
     -- cb3
+  Engine.runRenderLoop engine $ renderFn scene
   pure unit

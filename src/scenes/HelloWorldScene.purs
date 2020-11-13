@@ -6,6 +6,7 @@ import Effect (Effect)
 import Effect.Console (log, logShow)
 import Data.Semigroup ((<>))
 -- import Graphics.Babylon.Loader as Loader
+import Graphics.Babylon.Engine    as Engine
 import Graphics.Babylon.Scene    as Scene
 import Graphics.Babylon.Mesh as Mesh
 import Graphics.Babylon.Math.Vector as Vector
@@ -23,11 +24,17 @@ debuggerScene = ffi ["s", "s2"]
        //debugger;
      }
   """
+renderFn =  ffi ["scene"]
+      """(function () {
+            scene.render();
+          })
+      """
 -- main :: Scene.Scene -> Effect Unit
 main :: UtilsInternal.Context -> Effect Unit
 -- main scene = do
 main ctx = do
   let scene = UtilsInternal.getContextScene ctx
+      engine = UtilsInternal.getContextEngine ctx
   -- let scene2 = Scene.getScene 1
   -- let scene2 = scene
   log $ "HelloWorldScene.main: scene.uid=" <> Scene.uid scene
@@ -40,6 +47,7 @@ main ctx = do
   -- Mesh.setPosition box2 $ Vector.createVector3 (negate 2.0) 0.5 0.0
   Mesh.setPosition box2 $ Vector.createVector3 (-2.0) 0.5 0.0
   -- debuggerScene scene scene2
+  Engine.runRenderLoop engine $ renderFn scene
   pure unit
   -- log $ "hw: ersion=" <> Loader.doIt 7
 

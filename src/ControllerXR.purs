@@ -16,6 +16,7 @@ import Data.String.Regex.Unsafe (unsafeRegex)
 import Graphics.Babylon.Mesh (Mesh)
 -- import GlobalTypes (GameContext)
 import GlobalTypes as GlobalTypes
+import UtilsInternal as UtilsInternal
 -- (-> xr-helper (.-input ) (.-onControllerAddedObservable) (.add ctrl-added)))
 -- CBLiteral = callback literal
 -- type CBLiteral = String
@@ -24,6 +25,9 @@ type Callback = String
 -- foreign import data XRAppHelper :: Type
 -- foreign import xrAppHelper :: Effect Unit
 -- foreign import encodeURIComponent :: String -> String
+-- foreign import xrSetup2 :: Effect Unit
+foreign import xrSetup2 :: Scene.Scene -> Effect Unit
+foreign import xrSetup3 :: Scene.Scene -> Effect Unit
 -- WebXRInput
 -- this is a purescript level definition of foreign type WebXRInput
 -- data WebXRInput = WebXRInput {
@@ -67,23 +71,6 @@ debuggerHelper = fpi ["x"]
        debugger;
   """
 
-init :: WebXR.WebXRDefaultExperienceOptions -> Effect Unit
-init opts =
-  let a = 7
-      xr_app_helper = xrAppHelper
-  in do
-    -- xrAppHelper
-    let abc = xr_app_helper.abc
-    -- debuggerHelper xr_app_helper 1
-    log $ "ControllerXR.init: abc=" <> show abc
-    let r = xr_app_helper.dummy
-    let r2 = r 1
-    -- r2
-    -- let r3 = xr_app_helper.setupXR 1
-    -- xr_app_helper.setupXR 1
-    -- xr_app_helper.setupXR opts
-    let r3 = xr_app_helper.setupXR opts
-    pure unit
 
 -- This gets driven after the "enter vr" btn is clicked (by the setup of 'initControllerAddedObservable').
 -- ctrlAdded :: Effect Unit
@@ -205,3 +192,53 @@ saveXRExp = fpi ["xrExp", ""]
   """
     BABYLON.VT.xr_exp = xrExp
   """
+
+getLeftCtrlXr :: Effect WebXR.WebXRInputSource
+-- getLeftCtrlXr = ffi [""] "BABYLON.VT.leftCtrlXR;"
+getLeftCtrlXr = fpi [""]
+  """
+    if(BABYLON.VT.leftCtrlXR) {
+      return BABYLON.VT.leftCtrlXR;
+    }
+    else {
+      return {uniqueId: "zero"};
+    }
+  """
+
+-- init :: WebXR.WebXRDefaultExperienceOptions -> Effect Unit
+init :: UtilsInternal.Context -> WebXR.WebXRDefaultExperienceOptions -> Effect Unit
+-- init :: GlobalTypes.Context -> WebXR.WebXRDefaultExperienceOptions -> Effect Unit
+init ctx opts =
+  let a = 7
+      xr_app_helper = xrAppHelper
+      scene = UtilsInternal.getContextScene ctx
+  in do
+    -- xrAppHelper
+    let abc = xr_app_helper.abc
+    log $ "ControllerXR.init: ctx=" <> show ctx
+    -- debuggerHelper xr_app_helper 1
+    -- log $ "ControllerXR.init: abc=" <> show abc
+    -- let r = xr_app_helper.dummy
+    -- let r2 = r 1
+    -- r2
+    -- let r3 = xr_app_helper.setupXR 1
+    -- xr_app_helper.setupXR 1
+    -- xr_app_helper.setupXR opts
+    --vt-x let r3 = xr_app_helper.setupXR opts
+    -- xrSetup2 scene
+    -- let r2 = xrSetup2 scene
+    let r3 = xrSetup3 scene
+    -- log $ "rs=" <> show r2
+    pure unit
+
+tick :: Effect Unit
+-- tick :: GlobalTypes.DummyInt -> Effect Unit
+tick = do
+  leftCtrlXR <- getLeftCtrlXr
+  -- log $ "now in Controller.tick, leftCtrlXR=" <> show leftCtrlXR
+  -- let id = leftCtrlXR.uniqueId
+  --     reLeft = unsafeRegex ".*-(left).*" noFlags
+  --     idxLeft = search reLeft id
+  -- if isJust idxLeft then log $ "found real ctrl" else log $ "fake ctrl"
+
+  pure unit

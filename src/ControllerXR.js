@@ -71,6 +71,12 @@ exports.xrAppHelper = (function (x) {
       console.log("js.ControllerXR.ctrlAdded: entered");
       let hand = this.getCtrlHandedness(xrCtrl);
       console.log("js.ControllerXR.ctrlAdded: hand=", hand);
+      if (hand === "left") {
+        BABYLON.VT.leftCtrlXR = xrCtrl;
+      }
+      else if (hand === "right") {
+        BABYLON.VT.rightCtrlXR = xrCtrl;
+      }
       // (-> xr-controller .-onMotionControllerInitObservable (.add motion-controller-added)
       xrCtrl.onMotionControllerInitObservable.add(this.motionControllerAdded);
     }
@@ -110,11 +116,31 @@ exports.xrAppHelper = (function (x) {
       if(grip) {
         console.log("setting up grip btn handler");
         BABYLON.VT.grip = grip;
-        grip.onButtonStateChangedObservable.add((cmpt) => {
-          console.log("js-now in grip btn handler");
-        });
-        //debugger;
+        // grip.onButtonStateChangedObservable.add((cmpt) => {
+        //   console.log("js-now in grip btn handler");
+        // });
+        grip.onButtonStateChangedObservable.add(this.gripHandlerXR);
+        // grip.onButtonStateChanged.add(this.gripHandlerXR);
       }
+      // const thumbstick = motionCtrl.getComponent(BABYLON.WebXRControllerComponent.THUMBSTICK);
+      var thumbstick = motionCtrl.getComponent("thumbstick");
+      console.log("motionControllerAdded: thumbstick=", thumbstick);
+      if(thumbstick) {
+        console.log("setting up thumbstick btn handler");
+        thumbstick.onButtonStateChangedObservable.add((eventData) => {console.log("thumbstick handler")});
+      }
+      var mainComp = motionCtrl.getMainComponent();
+      console.log("motionControllerAdded: mainComp=", mainComp);
+      if(mainComp) {
+        console.log("setting up mainComp btn handler");
+        mainComp.onButtonStateChangedObservable.add((eventData) => {console.log("mainComp handler")});
+      }
+    }
+
+    // I cannot get this function to ever be driven.  It's the main controller "read" routine.
+    // e.g. the final goal of all the prior callbacks.
+    factory.gripHandlerXR = function (cmpt) {
+      console.log("gripHandlerXR: entered, cmpt=", cmpt);
     }
 
     // factory.setupXR = () => {
@@ -127,3 +153,61 @@ exports.xrAppHelper = (function (x) {
     return factory;
   //}
 })()
+// })
+
+exports.xrSetup2 = async (function (scene) {
+  console.log("xrSetup2: entered, scene=", scene);
+  // var scene = BABYLON.VT.active_scene;
+  // debugger;
+  var xr = await scene.createDefaultXRExperienceAsync({
+      // floorMeshes: [env.ground],
+      // inputOptions: { doNotLoadControllerMeshes: true }
+  });
+  // xr.pointerSelection.detach();
+
+  // const ray = new BABYLON.Ray();
+  xr.input.onControllerAddedObservable.add((source) => {
+      if (source.inputSource.handedness === "left") {
+          source.onMotionControllerInitObservable.add((motionController) => {
+              motionController.getMainComponent().onButtonStateChangedObservable.add((eventData) => {
+                  if (eventData.changes.pressed) {
+                      if (eventData.pressed) {
+                        console.log("hi from eventData pressed");
+                      }
+                  }
+              });
+          });
+      }
+  });
+})
+
+exports.xrSetup3 = (function (scene) {
+  console.log("xrSetup3: entered, scene=", scene);
+  // var scene = BABYLON.VT.active_scene;
+  // debugger;
+  scene.createDefaultXRExperienceAsync({
+      // floorMeshes: [env.ground],
+      // inputOptions: { doNotLoadControllerMeshes: true }
+  }).then((xr) =>
+  {
+    console.log("xrSetup3: handling xr setup");
+    xr.input.onControllerAddedObservable.add((source) => {
+        console.log("xrSetup3: controller added");
+        if (source.inputSource.handedness === "left") {
+            console.log("xrSetup3: left controller found");
+            source.onMotionControllerInitObservable.add((motionController) => {
+                console.log("xrSetup3: motionController found");
+                motionController.getMainComponent().onButtonStateChangedObservable.add((eventData) => {
+                    // Once again, I cannot get this to drive.
+                    console.log("xrSetup3: in onButtonStateChanged handler");
+                    if (eventData.changes.pressed) {
+                        if (eventData.pressed) {
+                          console.log("hi from eventData pressed");
+                        }
+                    }
+                });
+            });
+        }
+    });
+  });
+})

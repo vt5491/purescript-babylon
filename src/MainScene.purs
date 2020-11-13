@@ -34,8 +34,8 @@ dummyMainScene n = 8
 dummyReadGameCtx :: GlobalTypes.GameContext
 dummyReadGameCtx = GlobalTypes.getGameContext
 
-currentCtx :: Scene.Scene -> Camera.CameraInstance -> UtilsInternal.Context
-currentCtx s c = UtilsInternal.createContext s c
+currentCtx :: Engine.Engine -> Scene.Scene -> Camera.CameraInstance -> UtilsInternal.Context
+currentCtx e s c = UtilsInternal.createContext e s c
 
 debuggerMat :: Material.StandardMaterial -> Effect Unit
 debuggerMat = ffi ["x"]
@@ -93,7 +93,7 @@ runMainScene =
     initJsAppGlobal
     Scene.setActiveScene scene
     camera <- Camera.createArcRotate "camera" (oneDeg * 90.0) (oneDeg * 90.0) (45.0)  (Vector.createVector3 0.0 0.0 0.0)
-    let ctx = UtilsInternal.initContext scene camera
+    let ctx = UtilsInternal.initContext engine scene camera
     Camera.attachControl camera canvas true
     light <- Light.createHemisphericLight "light" (Vector.createVector3 0.0 1.0 0.0) scene
     ground <- Mesh.createGround "ground" {width: 50, height: 50} scene
@@ -116,7 +116,7 @@ runMainScene =
     Mesh.setPosition box $ Vector.createVector3 0.0 0.5 0.0
     Mesh.setMaterial box purpleMat
     -- Engine.runRenderLoop engine renderFn
-    Engine.runRenderLoop engine $ renderFn scene
+    --vt-xEngine.runRenderLoop engine $ renderFn scene
     -- pure unit
     -- pure scene
     log $ "returning from runMainScene, ctx=" <> show ctx

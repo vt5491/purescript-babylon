@@ -10,6 +10,7 @@ import Math (pi)
 import Graphics.Babylon.Engine (Engine)
 import Graphics.Babylon.Utils (ffi, fpi)
 import Graphics.Babylon.Scene (Scene)
+import Graphics.Babylon.Engine (Engine)
 import Graphics.Babylon.Camera (CameraInstance)
 import Graphics.Babylon.WebXR (WebXRInputSource)
 
@@ -18,12 +19,14 @@ import Graphics.Babylon.WebXR (WebXRInputSource)
 -- Note: update Context and ContextObj in unison
 data Context = Context {
 -- type Context = Context {
-    scene     :: Scene
+    engine    :: Engine
+  , scene     :: Scene
   , camera    :: CameraInstance
 }
 
 type ContextObj = {
-    scene     :: Scene
+    engine    :: Engine
+  , scene     :: Scene
   , camera    :: CameraInstance
 }
 
@@ -42,17 +45,20 @@ instance showContext :: Show Context where
 --   show ({scene: s, camera: c}) =
 --     "showContextObj: scene=" <> show s <> ", camera=" <> show c
 
-initContext :: Scene -> CameraInstance -> Context
-initContext s c = Context {scene: s, camera: c}
+initContext :: Engine -> Scene -> CameraInstance -> Context
+initContext e s c = Context {engine: e, scene: s, camera: c}
 
 -- alias for initContext
 createContext = initContext
 
+getContextEngine :: Context -> Engine
+getContextEngine (Context {engine: e, scene: s, camera: c}) = e
+
 getContextScene :: Context -> Scene
-getContextScene (Context {scene: s, camera: c}) = s
+getContextScene (Context {engine: e, scene: s, camera: c}) = s
 
 getContextCamera :: Context -> CameraInstance
-getContextCamera (Context {scene: s, camera: c}) = c
+getContextCamera (Context {engine: e, scene: s, camera: c}) = c
 
 -- getCurrentCamera :: Context -> CameraInstance
 -- getCurrentCamera
@@ -64,15 +70,16 @@ getContextCamera (Context {scene: s, camera: c}) = c
 -- contextToObj (Context {scene: s, camera: c}) = {scene: s, camera: c}
 
 contextToObj :: Context -> ContextObj
-contextToObj (Context {scene: s, camera: c}) = {scene: s, camera: c}
+contextToObj (Context {engine: e, scene: s, camera: c}) = {engine: e, scene: s, camera: c}
 
 contextObjToContext :: ContextObj -> Context
 -- contextObjToContext (ctxObj {scene: s, camera: c} =  Context s c
 -- contextObjToContext ctxObj =  Context $ ctxObj.scene $ ctxObj.camera
 contextObjToContext ctxObj =
-  let s = ctxObj.scene
+  let e = ctxObj.engine
+      s = ctxObj.scene
       c = ctxObj.camera
-  in createContext s c
+  in createContext e s c
 
 printCtx :: Context -> Effect Unit
 printCtx = fpi ["ctx", ""] "console.log('printCtx: ctx=', ctx);"

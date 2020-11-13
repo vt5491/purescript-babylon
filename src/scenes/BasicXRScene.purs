@@ -16,6 +16,7 @@ import Node.Path (FilePath)
 import Affjax as AX
 import Affjax.ResponseFormat as ResponseFormat
 
+import Graphics.Babylon.Engine   as Engine
 import Graphics.Babylon.Scene    as Scene
 import Graphics.Babylon.Mesh as Mesh
 import Graphics.Babylon.Math.Vector as Vector
@@ -154,6 +155,20 @@ createXRExp = fpi ["ctxObj", "opts", "cb"]
 --   -- let d = dummy
 --     -- let ground =
 --   pure unit
+-- renderFn :: Scene.Scene -> Effect Unit
+renderFn :: Scene.Scene -> String
+renderFn =
+  -- let ctrlTick = ControllerXR.tick 1
+  -- in
+  do
+    ffi ["scene"]
+      """(function () {
+            //console.log("now in renderFn");
+            scene.render();
+            PS.ControllerXR.tick();
+          })
+      """
+
 -- https://raw.githubusercontent.com/vt5491/purescript-babylon/main/LICENSE
 -- XRSetup ::
 -- main :: Scene.Scene -> Effect Unit
@@ -165,6 +180,7 @@ main ctx =
       -- r3 = UtilsInternal.printCtx ctx
       r2 = "abc"
       -- scene = (ctx.scene)
+      engine = UtilsInternal.getContextEngine ctx
       scene = UtilsInternal.getContextScene ctx
       camera = UtilsInternal.getContextCamera ctx
       camera1 = show camera
@@ -223,6 +239,8 @@ main ctx =
     -- log $ "result=" <> result
   --   log $ "BasicXRScene.main: entered" <> show 7
   --   -- result <- Common.createXRExp scene {floorMeshes: [ground]} "myCb"
-    ControllerXR.init opts
+    -- ControllerXR.init opts
+    ControllerXR.init ctx opts
     log  "xr enabled now"
+    Engine.runRenderLoop engine $ renderFn scene
     pure unit

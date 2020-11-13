@@ -26,6 +26,7 @@ import Scenes.LoadModelScene as LoadModelScene
 import Scenes.LoadModelScene (meshLoadedPS)
 import Scenes.BasicXRScene as BasicXRScene
 import UtilsInternal as UtilsInternal
+import ControllerXR as ControllerXR
 -- import Graphics.Babylon.GlobalTypes as GlobalTypes
 import GlobalTypes as GlobalTypes
 
@@ -96,6 +97,8 @@ forceExportGetGameContext = GlobalTypes.getGameContext
 forceExportSetGameContext :: WebXR.WebXRInputSource -> GlobalTypes.GameContext
 forceExportSetGameContext ctrl = GlobalTypes.setGameContext ctrl
 
+forceExportControllerXRTick :: Effect Unit
+forceExportControllerXRTick = ControllerXR.tick
 -- initXR :: WebXRExperienceHelper -> String
 main :: Effect Unit
 main = do
