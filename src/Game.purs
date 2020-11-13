@@ -99,6 +99,10 @@ forceExportSetGameContext ctrl = GlobalTypes.setGameContext ctrl
 
 forceExportControllerXRTick :: Effect Unit
 forceExportControllerXRTick = ControllerXR.tick
+
+forceExportControllerXRDummy :: Effect Unit
+forceExportControllerXRDummy = ControllerXR.dummy
+
 -- initXR :: WebXRExperienceHelper -> String
 main :: Effect Unit
 main = do

@@ -197,6 +197,7 @@ exports.xrSetup3 = (function (scene) {
             console.log("xrSetup3: left controller found");
             source.onMotionControllerInitObservable.add((motionController) => {
                 console.log("xrSetup3: motionController found");
+                // motionController.getMainComponent().onButtonStateChangedObservable.add(PS.ControllerXR.dummy);
                 motionController.getMainComponent().onButtonStateChangedObservable.add((eventData) => {
                     // Once again, I cannot get this to drive.
                     console.log("xrSetup3: in onButtonStateChanged handler");

@@ -71,6 +71,8 @@ debuggerHelper = fpi ["x"]
        debugger;
   """
 
+dummy :: Effect Unit
+dummy = log $ "ControllerXr.dummy: entered"
 
 -- This gets driven after the "enter vr" btn is clicked (by the setup of 'initControllerAddedObservable').
 -- ctrlAdded :: Effect Unit
