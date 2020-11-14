@@ -139,6 +139,7 @@ exports.xrAppHelper = (function (x) {
 
     // I cannot get this function to ever be driven.  It's the main controller "read" routine.
     // e.g. the final goal of all the prior callbacks.
+    // Update: Put on the headset to fully activate controllers.
     factory.gripHandlerXR = function (cmpt) {
       console.log("gripHandlerXR: entered, cmpt=", cmpt);
     }
@@ -200,6 +201,8 @@ exports.xrSetup3 = (function (scene) {
                 // motionController.getMainComponent().onButtonStateChangedObservable.add(PS.ControllerXR.dummy);
                 motionController.getMainComponent().onButtonStateChangedObservable.add((eventData) => {
                     // Once again, I cannot get this to drive.
+                    // Note: You *must* have the HMD on your head at one point to activate the
+                    // controllers. After doing this, this section of code is now driven.
                     console.log("xrSetup3: in onButtonStateChanged handler");
                     if (eventData.changes.pressed) {
                         if (eventData.pressed) {

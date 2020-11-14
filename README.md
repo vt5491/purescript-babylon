@@ -41,7 +41,15 @@ topLevelScene = "LoadModelScene"
 
 - The code is using the top level JS qualifier "BABYLON" to reference Babylon.js and is not using ES6 modules.  This is simply because I currently do not know how to reference ES6 modules using spago.  I would like to add this capability in the future.
 
+- If using the XR scene, do not forget that you have to have the headset on in order for certain controller actions to activate.  If you have it off and are just looking for messages on the console, you won't see any controller actions.
+- 
 ## Some Purescript Gotachs
+-- Update
+You can safely ignore most of the stuff here.  I originally tried to document all the problems I came across as soon as I got them in the mistaken notion that I would capture all the things you forget about once you understand things.  However, most of the things here aren't really that accurate, for instance you don't have to return funtions if you use easy-ffi.  So just refer to the code for reference, but this was my first "real-world" PS project, and I simply managed to get it across the line, and it shouldn't be used as a "reference" (which is laughable to me now). I did a lot of things wrong, but at least I learned the hard way, what works and what doesn't.
+
+But, I'll just leave it in as a flavor of what you might expect.  I started another project which uses parcel + spago, and that is JS primary and only calling out to PS secondarily.  As of this writing it feels like a better way to approach PS than the "pure PS" approach here.
+-- end Update
+
 While I'm not completely new to purescript or Haskell, I still consider myself a student and I mainly used this project as a learning experience.
 
 ### FFI problems
