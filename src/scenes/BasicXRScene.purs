@@ -225,6 +225,7 @@ main ctx =
     -- let newCtxObj5 = WebXR.createXRExp (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     let opts = {floorMeshes: [ground]} :: WebXR.WebXRDefaultExperienceOptions
     --vt-xlet newCtxObj5 = createXRExp (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
+    let newCtxObj = createXRExp (UtilsInternal.contextToObj ctx)  {floorMeshes: [ground]}  "myCB"
     -- let newCtx3 = UtilsInternal.contextObjToContext $ newCtxObj3
     -- log $ "BasicXRScene: newCtxObj3=" <> show newCtxObj3
     -- log $ "BasicXRScene: newCtx3.scene=" <> show (UtilsInternal.getContextScene newCtx3)
@@ -240,7 +241,7 @@ main ctx =
   --   log $ "BasicXRScene.main: entered" <> show 7
   --   -- result <- Common.createXRExp scene {floorMeshes: [ground]} "myCb"
     -- ControllerXR.init opts
-    ControllerXR.init ctx opts
+    --vt-y ControllerXR.init ctx opts
     log  "xr enabled now"
     Engine.runRenderLoop engine $ renderFn scene
     pure unit

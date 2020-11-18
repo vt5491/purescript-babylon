@@ -4,6 +4,7 @@ module Graphics.Babylon.WebXR where
 import Prelude
 import Effect (Effect)
 import Effect.Console (log)
+import Data.Maybe (Maybe(Just, Nothing))
 -- import Control.Monad.State
 -- import Effect.Aff (Aff)
 -- import Control.Monad.State.Class
@@ -12,6 +13,7 @@ import Graphics.Babylon.Utils (ffi, fpi)
 import Graphics.Babylon.Scene as Scene
 import Graphics.Babylon.Camera as Camera
 import Graphics.Babylon.Mesh (Mesh)
+import Control.Monad.Reader (Reader, ask)
 -- import UtilsInternal as UtilsInternal
 -- import Graphics.Babylon.GlobalTypes (ContextObj)
 
@@ -19,7 +21,9 @@ foreign import data WebXRExperienceHelper :: Type
 foreign import data WebXRDefaultExperience :: Type
 foreign import data WebXRState :: Type
 foreign import data WebXRAbstractMotionController :: Type
+foreign import data WebXRControllerComponent :: Type
 -- foreign import data WebXRDefaultExperienceOptions :: Type
+type WebXRControllerComponentReader = Reader WebXRControllerComponent
 
 instance showWebXRState :: Show WebXRState where
   show = ffi ["s"] "'WebXRState=' + s"
@@ -98,3 +102,42 @@ enterXR webXRState = do
 --       :left
 --       (if (re-matches #".*-(right).*" id)
 --         :right))))
+-- isPressed :: WebXRControllerComponent -> Maybe Boolean
+-- isPressed =
+--   let pressed = ffi ["cmpt"] "cmpt.pressed"
+--   in do
+--     log $ "WebXR: isPressed=" <> isPressed
+--     -- if pressed then Just true
+--     -- else Nothing
+
+-- isPressed :: WebXRControllerComponent -> Effect Boolean
+isPressed :: Reader WebXRControllerComponent  Boolean
+isPressed = fpi ["cmpt", ""]
+-- isPressed = ffi ["cmpt"]
+  """
+    //var p = cmpt.pressed;
+    //console.log("js.isPressed: p=", p);
+    //return p;
+    (() => {
+      var p = cmpt.pressed;
+      console.log("js.isPressed: p=", p);
+      return p;
+     });
+    //cmpt.pressed;
+  """
+
+isPressed2 :: Reader WebXRControllerComponent  Boolean
+isPressed2 =
+  do
+    r <- ask $ fpi ["cmpt", ""]
+      """
+        (() => {
+          var p = cmpt.pressed;
+          console.log("js.isPressed: p=", p);
+          //return p;
+          return false;
+         });
+      """
+    -- pure false
+    -- log $ "isPresse2: r=" <> show r
+    pure r

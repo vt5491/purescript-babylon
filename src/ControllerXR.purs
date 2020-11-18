@@ -6,6 +6,7 @@ import Effect (Effect)
 import Effect.Console (log)
 import Graphics.Babylon.Utils (ffi, fpi)
 import Graphics.Babylon.Scene as Scene
+import Control.Monad.Reader (Reader, ask, runReader)
 import Graphics.Babylon.Camera as Camera
 -- import Graphics.Babylon.Common as Common
 import Graphics.Babylon.WebXR as WebXR
@@ -156,6 +157,8 @@ getCtrlHandedness ctrl =
 
 
 -- This is activated up entering vr, and then activating a controller
+-- Note: you must have the HMD on your head (e.g "pressurized")
+-- in order to get any button events generated.
 setupMotionControllerAdded :: WebXR.WebXRInput -> String -> Effect Unit
 setupMotionControllerAdded = fpi ["ctrl", "cb", ""]
 -- setupMotionControllerAdded = fpi ["ctrl", "cb"]
@@ -169,19 +172,48 @@ setupMotionControllerAdded = fpi ["ctrl", "cb", ""]
       if(grip) {
         console.log("setting up grip btn handler");
         BABYLON.VT.grip = grip;
-        grip.onButtonStateChangedObservable.add((cmpt) => {
-          console.log("js-now in grip btn handler");
-        });
-        //debugger;
+        //grip.onButtonStateChangedObservable.add((cmpt) => {
+         // console.log("js-now in grip btn handler");
+        //});
+        grip.onButtonStateChangedObservable.add(
+         //(PS.ControllerXR.gripHandlerXR)(grip)()
+         (PS.ControllerXR.gripHandlerXR)(grip)
+        );
       }
     });
   """
+
+  -- (if (.-pressed cmpt)
+  --   (when (and left-ctrl-xr (not is-gripping))
+  --     (set! grip-start-pos (-> left-ctrl-xr (.-grip) (.-position) (.clone)))
+  --     (set! is-gripping true)
+-- This is the main controller method.  All the callbacks are so that
+-- this can eventually be driven.  This is driven on every tick.  We then
+-- setup values here and calculate deltas in the 'tick' method.
+gripHandlerXR :: WebXR.WebXRControllerComponent -> Effect Unit
+gripHandlerXR cmpt =
+  let a = 7
+      -- pressed = WebXR.isPressed cmpt
+      -- pressed = ask WebXR.isPressed cmpt
+      -- pressed = do
+      -- pressed = WebXR.isPressed2 cmpt
+  in do
+    log $ "gripHandlerXR: a=" <> show 7
+    let r = runReader WebXR.isPressed2 cmpt
+    log $ "r=" <> show r
+    -- pressed <- WebXR.isPressed cmpt
+    -- pressed <- WebXR.isPressed2 cmpt
+    -- pressed <- ask WebXR.isPressed cmpt
+    -- log $ "gripHandlerXR: pressed=" <> show  pressed
+    -- if
+    pure unit
 -- (defn motion-controller-added [motion-ctrl]
 --   (prn "gamepad-evt-hander entered, motion-ctrl=" motion-ctrl)
 --   (set! grip (-> motion-ctrl (.getComponent "xr-standard-squeeze")))
 --   (when grip
 --     (prn "setting up grip btn handler")
 --     (-> grip (.-onButtonStateChangedObservable) (.add grip-handler-xr))))
+
 motionControllerAdded :: WebXR.WebXRAbstractMotionController
 motionControllerAdded = ffi ["motionCtrl"]
   """

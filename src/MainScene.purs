@@ -58,9 +58,9 @@ initJsAppGlobal :: Effect Unit
 initJsAppGlobal = fpi [""]
   """
           console.log("initJsAppGlobal: entered");
-          //if (! BABYLON.VT) {
-          BABYLON.VT = {};
-          //}
+          if (! BABYLON.VT) {
+            BABYLON.VT = {};
+          }
   """
 
 renderFn =  ffi ["scene"]
@@ -90,7 +90,7 @@ runMainScene =
     scene        <- Scene.create engine
     -- let rAppGlobal = initJsAppGlobal 1
     -- initJsAppGlobal 1
-    initJsAppGlobal
+    -- initJsAppGlobal
     Scene.setActiveScene scene
     camera <- Camera.createArcRotate "camera" (oneDeg * 90.0) (oneDeg * 90.0) (45.0)  (Vector.createVector3 0.0 0.0 0.0)
     let ctx = UtilsInternal.initContext engine scene camera

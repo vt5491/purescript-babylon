@@ -7,6 +7,7 @@ module GlobalTypes where
 import Prelude
 import Effect (Effect)
 import Graphics.Babylon.Scene (Scene)
+import Graphics.Babylon.Engine (Engine)
 import Graphics.Babylon.Camera (CameraInstance)
 import Graphics.Babylon.WebXR (WebXRInputSource)
 import Graphics.Babylon.Utils (ffi, fpi)
@@ -26,7 +27,8 @@ data Context = Context {
 }
 
 type ContextObj = {
-    scene     :: Scene
+    engine    :: Engine
+  , scene     :: Scene
   , camera    :: CameraInstance
 }
 
@@ -53,7 +55,7 @@ initGameContext = fpi [""]
       };
       BABYLON.VT.game_context = {};
       BABYLON.VT.game_context.dummyInt = 1;
-      //debugger;
+      BABYLON.VT.game_context.isGripping = false;
       return BABYLON.VT.game_context;
   """
 
